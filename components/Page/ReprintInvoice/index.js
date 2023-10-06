@@ -35,7 +35,7 @@ export default function ReprintInvoice(){
         setFdata({...fdata,loading: true})       
         if( (input.tipo === 1 && input.folio > 0 && input.serie !== '') || (input.tipo === 2)){
             if( (input.tipo === 2 && input.rfc !== '') || (input.tipo === 1)){
-                axios.post('https://t3b-facturacion-das.azurewebsites.net/t3b-fact-das/reimpresion'
+                axios.post('https://appdashboard3b.azurewebsites.net/t3b-fact-das/reimpresion'
                 ,input
                 ,fdata.header)
                 .then(function (response) {

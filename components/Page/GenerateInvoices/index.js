@@ -44,7 +44,7 @@ export default function GenerateInvoices(){
         if(input.rfc !== ''){
             setFdata({...fdata,loading: true})
             setInput({rfc:'', correo:'', razonSocial:'', correo2:'', usoCFDI: fdata.usosCFDI[0].value, regimenFiscal: fdata.RegimenesFiscales[0].value, domicilio: {calle:'', numExt:'', numInt:'', colonia: '', munAlc: '', estado: '', pais:'', cp:''}})
-            await axios.post('https://t3b-facturacion-das.azurewebsites.net/t3b-fact-das/cliente',{},{...fdata.header, params: { rfc: input.rfc } })
+            await axios.post('https://appdashboard3b.azurewebsites.net/t3b-fact-das/cliente',{},{...fdata.header, params: { rfc: input.rfc } })
             .then(function (response) {
                 const cliente =  response.data;
                 if(cliente){
@@ -72,7 +72,7 @@ export default function GenerateInvoices(){
                     const validaC = validaCaptura(captura)                 
                     if(validaC === '') {
                         setFdata({...fdata,loading: true})
-                        await axios.post('http://23.99.227.250:8081/t3b-fact-ticket/agregarTicket',captura ,{...fdata.header})
+                        await axios.post('https://appt3bticket.azurewebsites.net/t3b-fact-ticket/agregarTicket',captura ,{...fdata.header})
                         .then(function (response) {
                             if(response.data !== null && response.data !== ''){
                                 if(response.data.folio != null && response.data.folio != ''){
@@ -141,7 +141,7 @@ export default function GenerateInvoices(){
     async function generar(){
         if(tickets.length  > 0){
             setFdata({...fdata,loading: true})
-            await axios.post('http://23.99.227.250:8081/t3b-fact-ticket/generarFactura',{
+            await axios.post('https://appt3bticket.azurewebsites.nett3b-fact-ticket/generarFactura',{
                 tickets: tickets,
                 fclientes: input
             },fdata.header)
