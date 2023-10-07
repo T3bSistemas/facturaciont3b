@@ -141,7 +141,7 @@ export default function GenerateInvoices(){
     async function generar(){
         if(tickets.length  > 0){
             setFdata({...fdata,loading: true})
-            await axios.post('https://appt3bticket.azurewebsites.nett3b-fact-ticket/generarFactura',{
+            await axios.post('https://appt3bticket.azurewebsites.net/t3b-fact-ticket/generarFactura',{
                 tickets: tickets,
                 fclientes: input
             },fdata.header)
