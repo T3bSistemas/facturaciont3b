@@ -20,6 +20,7 @@ export default function Home() {
           content="Facturacion en linea de clientes"
           key="desc"
         />
+        <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"></meta>
         <link rel="icon" href="/img/favicon.ico" sizes="any" />
       </Head>  
       <FacUserProvider />
