@@ -27,7 +27,7 @@ export default function Start(){
                 :
                 <Grid container spacing={2}>
                     <GridText text={'FACTURACIÓN EN LINEA 4.0'} variant={'h4'} component={'h1'} aling='center' separation={8} xs={12} md={6} />
-                    <GridImage infoAdd={<Typography variant='h6' textAlign='center' mt={1}><b>Que datos necesito de mi ticket</b> v1.1</Typography>} src={img64('ticket')} width={50} height={50} widthMatches={50} heightMatches={50} alt={'Informacion Ticket'} xs={12} md={6} separation={3} click={()=>{setModal(true)}}/>
+                    <GridImage infoAdd={<Typography variant='h6' textAlign='center' mt={1}><b>Que datos necesito de mi ticket</b> v1</Typography>} src={img64('ticket')} width={50} height={50} widthMatches={50} heightMatches={50} alt={'Informacion Ticket'} xs={12} md={6} separation={3} click={()=>{setModal(true)}}/>
                     <ModalTicket modal={modal} setModal={setModal}/>  
                     <Grid item xs={12} md={6} mt={5}>                        
                         <Grid container spacing={1}>
