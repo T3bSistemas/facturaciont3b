@@ -30,6 +30,7 @@ export default function ReprintInvoice(){
     const setFdata                  = useSetFContext();
     const [input, setInput]         = useState({tipo: 1, folio:0, serie:'', rfc:''})     
     const [rows, setRows]           = useState([])
+    const [correos, setCorreos]     = useState({to:'', toReply: ''})
 
     function buscar(){
         setFdata({...fdata,loading: true})       
@@ -79,8 +80,34 @@ export default function ReprintInvoice(){
         }       
     }
 
-    function enviarEmail(factura){
-        alert(factura.uuid)
+    async function enviarEmail(factura){       
+        if(factura.uuid !== ''){
+            if(correos.to !== '' && correos.to.includes('@')){                
+                if( (correos.toReply === '') || (correos.toReply !== '' && correos.toReply.includes('@'))){   
+                    setFdata({...fdata,loading: true})                
+                    await axios.post('https://appdashboard3b.azurewebsites.net/t3b-fact-das/correo'
+                    ,{}
+                    ,{...fdata.header, params: { uuid: factura.uuid , to: correos.to, toReply: correos.toReply }})
+                    .then(function (response) {
+                        if(response.data){
+                            setFdata({...fdata,loading:false, snackbar: setSnackbar(fdata,'COKE')})
+                        }else{
+                            setFdata({...fdata,loading:false, snackbar: setSnackbar(fdata,'SEC')})
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                        setFdata({...fdata,loading:false, snackbar: setSnackbar(fdata,'SEC')})
+                    })
+                }else{
+                    setFdata({...fdata,loading:false, snackbar: setSnackbar(fdata,'RTO')})
+                }
+            }else{
+                setFdata({...fdata,loading:false, snackbar: setSnackbar(fdata,'RTO')})
+            }
+        } else{
+            setFdata({...fdata,loading:false, snackbar: setSnackbar(fdata,'UUID')})
+        }
     }
 
     return (
@@ -102,22 +129,26 @@ export default function ReprintInvoice(){
             <GridLoadingButton label={'Buscar Folios'} click={buscar} loading={fdata.loading} variant={'contained'} icon={<ManageSearchOutlinedIcon />} color={'info'} fullWidth={false} size={'medium'} xs={12} md={3}/>
      
             {(rows.length > 0)?
-                (input.tipo === 1)?  
-                    rows.map((row, index) => (
+                (input.tipo === 1)?
+                    <>
+                    <GridTextFiled id={'mail'}   value={correos.to}        action={({target})=>{setCorreos({...correos, to:target.value})}}      label={'Correo Electronico'}   variant={'standard'} focused={true} required={true} fullWidth={true} placeholder={'correo1@mail.com'} xs={12} md={6} />
+                    <GridTextFiled id={'mail2'}  value={correos.toReply}   action={({target})=>{setCorreos({...correos, toReply:target.value})}} label={'Correo electronico2'}  variant={'standard'} focused={true} required={true} fullWidth={true} placeholder={'correo2@mail.com'} xs={12} md={6} />  
+                    {rows.map((row, index) => (
                         <Grid key={index} container mt={8}>
-                            <GridText text={'Factura'}  variant={'h6'} component={'h6'} aling='center' separation={0} xs={2} md={2}/>
-                            <GridText text={row.uuid}     variant={'h6'} component={'h6'} aling='center' separation={0} xs={10} md={10}/>
-                            <Grid item xs={0} md={3}></Grid> 
-                            {/* <GridLoadingButton    label={'Enviar'}         click={buscar} loading={false} variant={'contained'} icon={<ForwardToInboxOutlinedIcon />}    color={'info'} fullWidth={false} size={'medium'} xs={12} md={2}/> */}
-                            <GridLoadingButtonDow label={'Descargar XML'}  click={()=>{}} loading={false} variant={'contained'} icon={<FileDownloadOutlinedIcon />}   color={'info'} fullWidth={false} docName={row.uuid+'.xml'} href={'data:image/xml;base64,'+row.xmlBase64} size={'medium'} xs={12} md={2}/>
-                            <GridLoadingButtonDow label={'Descargar PDF'}  click={()=>{}} loading={false} variant={'contained'} icon={<FileDownloadOutlinedIcon />}   color={'info'} fullWidth={false} docName={row.uuid+'.PDF'} href={'data:image/xml;base64,'+row.pdfBase64} size={'medium'} xs={12} md={2}/>
+                            <GridText text={'Factura'}  variant={'h6'} component={'h6'} aling='center' separation={0}   xs={12} md={2}/>
+                            <GridText text={row.uuid}     variant={'h6'} component={'h6'} aling='center' separation={0} xs={12} md={10}/>                            
+                            <Grid item xs={0} md={3}></Grid>                             
+                            <GridLoadingButtonDow label={'Descargar XML'}       click={()=>{}} loading={false} variant={'contained'} icon={<FileDownloadOutlinedIcon />}   color={'info'} fullWidth={false} docName={row.uuid+'.xml'} href={'data:image/xml;base64,'+row.xmlBase64} size={'medium'} xs={12} md={2}/>
+                            <GridLoadingButtonDow label={'Descargar PDF'}       click={()=>{}} loading={false} variant={'contained'} icon={<FileDownloadOutlinedIcon />}   color={'info'} fullWidth={false} docName={row.uuid+'.PDF'} href={'data:image/xml;base64,'+row.pdfBase64} size={'medium'} xs={12} md={2}/>
+                            <GridLoadingButton    label={'Enviar XML Y PDF'}    click={()=>{enviarEmail({uuid: row.uuid})}} loading={false} variant={'contained'} icon={<ForwardToInboxOutlinedIcon />} color={'info'} fullWidth={false} size={'medium'} xs={12} md={2}/>
                             <Grid item xs={0} md={3}></Grid>  
                         </Grid> 
-                    ))
+                    ))}
+                    </>
                     :                                
                     <Grid container mt={8}>
-                        <GridTextFiled id={'mail'}   label={'Correo Electronico'}   variant={'standard'} focused={true} required={true} fullWidth={true} placeholder={'correo1@mail.com'} xs={12} md={6} />
-                        <GridTextFiled id={'mail2'}  label={'Correo electronico2'}  variant={'standard'} focused={true} required={true} fullWidth={true} placeholder={'correo2@mail.com'} xs={12} md={6} />
+                        <GridTextFiled id={'mail'}   value={correos.to}        action={({target})=>{setCorreos({...correos, to:target.value})}}      label={'Correo Electronico'}   variant={'standard'} focused={true} required={true} fullWidth={true} placeholder={'correo1@mail.com'} xs={12} md={6} />
+                        <GridTextFiled id={'mail2'}  value={correos.toReply}   action={({target})=>{setCorreos({...correos, toReply:target.value})}} label={'Correo electronico2'}  variant={'standard'} focused={true} required={true} fullWidth={true} placeholder={'correo2@mail.com'} xs={12} md={6} />
                         <GirdBasicTable rows={rows} colums={colums} funcion={enviarEmail}xs={12} md={12} mt={3}/>
                     </Grid>
                 :

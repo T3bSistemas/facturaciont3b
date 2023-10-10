@@ -26,7 +26,17 @@ export  function setSnackbar(fdata, tipo){
         return {...fdata.snackbar,tipo:tipo, open:true, severity:'error',   message: 'Ingresa una Serie'}
     } else if(tipo === 'REG'){
         return {...fdata.snackbar,tipo:tipo, open:true, severity:'error',   message: 'No se encontro una Region para la tienda solicitada'}
-    } 
+    } else if(tipo === 'SEC'){
+        return {...fdata.snackbar,tipo:tipo, open:true, severity:'error',   message: 'El sistema está experimentado problemas para enviar su factura, inténtelo más tarde o póngase en contacto con nosotros en facturamicompra@t3b.com.mx'}
+    } else if(tipo === 'RTO'){
+        return {...fdata.snackbar,tipo:tipo, open:true, severity:'error',   message: 'Ingresa o Verifica el correo'}
+    } else if(tipo === 'UUID'){
+        return {...fdata.snackbar,tipo:tipo, open:true, severity:'error',   message: 'Error al obtener el UUID'}
+    } else if(tipo === 'COKE'){
+        return {...fdata.snackbar,tipo:tipo, open:true, severity:'success',   message: 'La factura fué enviada a su cuenta de correo de manera exitosa'}
+    } else if(tipo === 'COKE'){
+        return {...fdata.snackbar,tipo:tipo, open:true, severity:'success',   message: 'La factura fué enviada a su cuenta de correo de manera exitosa'}
+    }
     /*********************************Reimpresion******************************************** */
     /*************************************Valida Captura*********************************************************************************/
     else if(tipo === 'FCH'){

@@ -72,8 +72,7 @@ export default function GenerateInvoices(){
                     const validaC = validaCaptura(captura)                 
                     if(validaC === '') {
                         setFdata({...fdata,loading: true})
-                        var delivery_data_url = $('#delivery_data_url').attr('data-url');
-                        await axios.post(delivery_data_url,captura ,{...fdata.header})
+                        await axios.post('http://20.83.26.232:8081/t3b-fact-ticket/agregarTicket',captura ,{...fdata.header})
                         .then(function (response) {
                             if(response.data !== null && response.data !== ''){
                                 if(response.data.folio != null && response.data.folio != ''){
