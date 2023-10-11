@@ -4,15 +4,16 @@ TableContainer, TableHead, TableRow,
 Paper,Button}                                       from '@mui/material';
 import DeleteOutlineOutlinedIcon                    from '@mui/icons-material/DeleteOutlineOutlined';
 import PictureAsPdfOutlinedIcon                     from '@mui/icons-material/PictureAsPdfOutlined';
-import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined';
+import ArticleOutlinedIcon                          from '@mui/icons-material/ArticleOutlined';
 import AttachEmailOutlinedIcon                      from '@mui/icons-material/AttachEmailOutlined';
 import GridLoadingButtonDow                         from '../../fastComponents/Girds/GridLoadingButton/GridLoadingButtonDow';
 import CancelIcon                                   from '@mui/icons-material/Cancel';
 
-export default function BasicTable({colums, rows, funcion}) {
+import LoadingButton                                from '../../fastComponents/LoadingButton';
+import { useFContext}                               from "../../FacUserProvider";
 
-  
-
+export default function BasicTable({colums, rows, funcion}) { 
+  const fdata   = useFContext();
   return (
     <TableContainer component={Paper}>      
       <Table sx={{ minWidth: 650 }} aria-label='simple table'>
@@ -42,7 +43,8 @@ export default function BasicTable({colums, rows, funcion}) {
                     <GridLoadingButtonDow label={''}  click={()=>{}} loading={false} variant={'contained'} icon={(row.xmlBase64 != null && row.xmlBase64 != '')?<ArticleOutlinedIcon/>:<CancelIcon/>}   color={(row.xmlBase64 != null && row.xmlBase64 != '')?'info':'error'} fullWidth={false} docName={row.uuid+'.xml'} href={'data:image/xml;base64,'+row.xmlBase64} size={'medium'} xs={12} md={2}/>
                     :
                     (row[key] === 'mail')?
-                    <Button onClick={()=>{funcion(row)}} variant='outlined' color={'info'}  startIcon={<AttachEmailOutlinedIcon />}></Button>
+                    <LoadingButton label={''} click={()=>{funcion(row)}} loading={fdata.loading} variant={'contained'} icon={<AttachEmailOutlinedIcon />} color={'info'} fullWidth={false} disabled={false} size={'medium'}/>
+                    // <Button onClick={()=>{funcion(row)}} variant='outlined' color={'info'}  startIcon={<AttachEmailOutlinedIcon />}></Button>
                     :
                     row[key]}
                   </TableCell>

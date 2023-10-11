@@ -33,6 +33,7 @@ export default function ReprintInvoice(){
     const [correos, setCorreos]     = useState({to:'', toReply: ''})
 
     function buscar(){
+        setRows([])
         setFdata({...fdata,loading: true})       
         if( (input.tipo === 1 && input.folio > 0 && input.serie !== '') || (input.tipo === 2)){
             if( (input.tipo === 2 && input.rfc !== '') || (input.tipo === 1)){
@@ -57,7 +58,7 @@ export default function ReprintInvoice(){
                             setRows(dataRfc)                            
                         }
                         setFdata({...fdata,loading: false})  
-                    }else{
+                    } else{
                         setFdata({...fdata,loading:false, snackbar: setSnackbar(fdata,'SNR')})
                     }          
                 })
@@ -138,9 +139,9 @@ export default function ReprintInvoice(){
                             <GridText text={'Factura'}  variant={'h6'} component={'h6'} aling='center' separation={0}   xs={12} md={2}/>
                             <GridText text={row.uuid}     variant={'h6'} component={'h6'} aling='center' separation={0} xs={12} md={10}/>                            
                             <Grid item xs={0} md={3}></Grid>                             
-                            <GridLoadingButtonDow label={'Descargar XML'}       click={()=>{}} loading={false} variant={'contained'} icon={<FileDownloadOutlinedIcon />}   color={'info'} fullWidth={false} docName={row.uuid+'.xml'} href={'data:image/xml;base64,'+row.xmlBase64} size={'medium'} xs={12} md={2}/>
-                            <GridLoadingButtonDow label={'Descargar PDF'}       click={()=>{}} loading={false} variant={'contained'} icon={<FileDownloadOutlinedIcon />}   color={'info'} fullWidth={false} docName={row.uuid+'.PDF'} href={'data:image/xml;base64,'+row.pdfBase64} size={'medium'} xs={12} md={2}/>
-                            <GridLoadingButton    label={'Enviar XML Y PDF'}    click={()=>{enviarEmail({uuid: row.uuid})}} loading={false} variant={'contained'} icon={<ForwardToInboxOutlinedIcon />} color={'info'} fullWidth={false} size={'medium'} xs={12} md={2}/>
+                            <GridLoadingButtonDow label={'Descargar XML'}       click={()=>{}} loading={fdata.loading} variant={'contained'} icon={<FileDownloadOutlinedIcon />}   color={'info'} fullWidth={false} docName={row.uuid+'.xml'} href={'data:image/xml;base64,'+row.xmlBase64} size={'medium'} xs={12} md={2}/>
+                            <GridLoadingButtonDow label={'Descargar PDF'}       click={()=>{}} loading={fdata.loading} variant={'contained'} icon={<FileDownloadOutlinedIcon />}   color={'info'} fullWidth={false} docName={row.uuid+'.PDF'} href={'data:image/xml;base64,'+row.pdfBase64} size={'medium'} xs={12} md={2}/>
+                            <GridLoadingButton    label={'Enviar XML Y PDF'}    click={()=>{enviarEmail({uuid: row.uuid})}} loading={fdata.loading} variant={'contained'} icon={<ForwardToInboxOutlinedIcon />} color={'info'} fullWidth={false} size={'medium'} xs={12} md={2}/>
                             <Grid item xs={0} md={3}></Grid>  
                         </Grid> 
                     ))}
