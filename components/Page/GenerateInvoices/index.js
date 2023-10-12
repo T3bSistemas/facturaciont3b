@@ -72,7 +72,7 @@ export default function GenerateInvoices(){
                     const validaC = validaCaptura(captura)                 
                     if(validaC === '') {
                         setFdata({...fdata,loading: true})
-                        await axios.post('https://ticketfact.t3b.mx/t3b-fact-ticket/agregarTicket',captura ,{...fdata.header,'Upgrade-Insecure-Requests': '1'})
+                        await axios.post('https://ticketfact.t3b.mx/t3b-fact-ticket/agregarTicket',captura ,fdata.header)
                         .then(function (response) {
                             if(response.data !== null && response.data !== ''){
                                 if(response.data.folio != null && response.data.folio != ''){
@@ -144,7 +144,7 @@ export default function GenerateInvoices(){
             await axios.post('https://ticketfact.t3b.mx/t3b-fact-ticket/generarFactura',{
                 tickets: tickets,
                 fclientes: input
-            },{...fdata.header,'Upgrade-Insecure-Requests': '1'})
+            },fdata.header)
             .then(function (response) {
                 const tikets = response.data;
                 if(tikets.length > 0){

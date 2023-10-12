@@ -4,6 +4,8 @@ import Item                                         from '../Item'
 import Sheet                                        from '@mui/joy/Sheet';
 import ModalClose                                   from '@mui/joy/ModalClose';
 
+import {img64}                                      from '../../UtilFunction/Base64Img'
+
 export default function ModalTicket({modal, setModal}){
     return (
         <Modal
@@ -39,7 +41,7 @@ export default function ModalTicket({modal, setModal}){
                 <Grid item xs={12} md={6}>
                     <Item>
                         <Image
-                        src="/datosTicket.png"
+                        src={img64('dataTicket')}
                         width={400}
                         height={400}
                         alt="Picture of the author"
