@@ -72,7 +72,8 @@ export default function GenerateInvoices(){
                     const validaC = validaCaptura(captura)                 
                     if(validaC === '') {
                         setFdata({...fdata,loading: true})
-                        await axios.post('https://ticketfact.t3b.mx/t3b-fact-ticket/agregarTicket',captura ,fdata.header)
+                        //await axios.post('https://ticketfact.t3b.mx/t3b-fact-ticket/agregarTicket',captura ,fdata.header)
+                        await axios.post('https://appticktpt3b.azurewebsites.net/t3b-fact-ticket/agregarTicket',captura ,fdata.header)
                         .then(function (response) {
                             if(response.data !== null && response.data !== ''){
                                 if(response.data.folio != null && response.data.folio != ''){
