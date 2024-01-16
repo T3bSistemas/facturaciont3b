@@ -63,8 +63,8 @@ export default function GenerateInvoices(){
         }
     }
 
-    async function agregar(){
-        if(tickets.length <= 50){            
+    async function agregar(){        
+        if(tickets.length <= 50){
             const validaD= validaDatos(input)
             if(validaD === ''){                        
                 const existeT = tickets.filter(function (ticket) {return ticket.fechaCompra === captura.fechaCompra && ticket.tienda === captura.tienda && ticket.caja === captura.caja && ticket.ticket === captura.ticket && ticket.total===captura.total });
@@ -141,34 +141,40 @@ export default function GenerateInvoices(){
 
     async function generar(){
         if(tickets.length  > 0){
-            setFdata({...fdata,loading: true})
-            //await axios.post('https://ticketfact.t3b.mx/t3b-fact-ticket/generarFactura',{
-            await axios.post('https://appticktpt3b.azurewebsites.net/t3b-fact-ticket/generarFactura',{
-                tickets: tickets,
-                fclientes: input
-            },fdata.header)
-            .then(function (response) {
-                const tikets = response.data;
-                if(tikets.length > 0){
-                    const errors = tikets.filter(function (tiket) {return  tiket.folio === null || tiket.folio === ''});
-                    if(errors.length === 0){                        
-                        setFdata({...fdata,loading:false, snackbar: setSnackbar(fdata,'OK')})                      
-                    }else {                            
-                        if(errors[0].xml !== null){
-                            setFdata({...fdata,loading:false, snackbar:  {...fdata.snackbar,tipo:'ERROR', open:true, severity:'error',   message: errors[0].xml} })
-                        }else{
-                            setFdata({...fdata,loading:false, snackbar: setSnackbar(fdata,'SEP')})
-                        }                  
+            const validaD= validaDatos(input)
+            if(validaD === ''){
+                setFdata({...fdata,loading: true})
+                //await axios.post('http://localhost:8081/t3b-fact-ticket/generarFactura',{
+                await axios.post('https://appticktpt3b.azurewebsites.net/t3b-fact-ticket/generarFactura',{
+                    tickets: tickets,
+                    fclientes: input
+                },fdata.header)
+                .then(function (response) {
+                    const tikets = response.data;
+                    if(tikets.length > 0){
+                        const errors = tikets.filter(function (tiket) {return  tiket.folio === null || tiket.folio === ''});
+                        if(errors.length === 0){                        
+                            setFdata({...fdata,loading:false, snackbar: setSnackbar(fdata,'OK')})                      
+                        }else {                            
+                            if(errors[0].xml !== null){
+                                setFdata({...fdata,loading:false, snackbar:  {...fdata.snackbar,tipo:'ERROR', open:true, severity:'error',   message: errors[0].xml} })
+                            }else{
+                                setFdata({...fdata,loading:false, snackbar: setSnackbar(fdata,'SEP')})
+                            }                  
+                        }
+                    }else{                        
+                        setFdata({...fdata,loading:false, snackbar: setSnackbar(fdata,'ERRGEN')})
                     }
-                }else{                        
-                    setFdata({...fdata,loading:false, snackbar: setSnackbar(fdata,'ERRGEN')})
-                }
-                setTickets([])
-            })
-            .catch(function (error) {
-                console.log(error);
-                setFdata({...fdata,loading:false, snackbar: setSnackbar(fdata,'ERRAGREGAR-TIKD')})
-            })
+                    setTickets([])
+                })
+                .catch(function (error) {
+                    console.log(error);
+                    setFdata({...fdata,loading:false, snackbar: setSnackbar(fdata,'ERRAGREGAR-TIKD')})
+                })
+            }else {
+                setFdata({...fdata,loading:false, snackbar: setSnackbar(fdata,validaD)})
+            }
+            
         } else{
             setFdata({...fdata,loading:false, snackbar: setSnackbar(fdata,'TKV')})
         }
@@ -252,7 +258,7 @@ export default function GenerateInvoices(){
             }
             <Grid item xs={1} md={3} />
             {(tickets.length > 0)&&               
-             <GridLoadingButton label={'Generar Factura'} click={generar} loading={fdata.loading} variant={'outlined'} icon={<ReceiptOutlinedIcon />} color={'success'} fullWidth={false} size={'large'} disabled={false}      xs={10} md={6}/>
+             <GridLoadingButton label={'Generar Factura'} click={()=>{generar()}} loading={fdata.loading} variant={'outlined'} icon={<ReceiptOutlinedIcon />} color={'success'} fullWidth={false} size={'large'} disabled={false}      xs={10} md={6}/>
             }
             <Grid item xs={1} md={3}></Grid>
         </Grid>
