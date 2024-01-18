@@ -93,10 +93,12 @@ export default function GenerateInvoices(){
                                     (parseFloat(response.data.total).toFixed(2) === parseFloat(captura.total).toFixed(2))
                                     ){
                                         if(response.data.total.tipoPago !== '2' && response.data.total.tipoPago !== '3' && response.data.total.tipoPago !== '7'){
+                                            alert(JSON.stringify(response.data.detalles))
                                             setTickets([...tickets,{fechaCompra: captura.fechaCompra, tienda: captura.tienda, caja: captura.caja, ticket: captura.ticket, total: captura.total, accion: 'delete', region: response.data.region, conexion: response.data.conexion, tipoPago: response.data.tipoPago}])
                                             setCaptura({...captura, tienda: 0, caja: '', ticket: 0, total: 0.00, region: 0, conexion:{tclave: '',host: '', puerto: '', servicio: '', base: '', driver: '', url: ''}})
                                             setFdata({...fdata,loading:false,  snackbar: setSnackbar(fdata,'TKA')})      
                                             setHabilitar(false)                                 
+                                        
                                         }else{
                                             setFdata({...fdata, loading:false, snackbar: setSnackbar(fdata,'TKP')})
                                         }
