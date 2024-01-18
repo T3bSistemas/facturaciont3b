@@ -14,6 +14,8 @@ export  function setSnackbar(fdata, tipo){
         return {...fdata.snackbar,tipo:tipo, open:true, severity:'warning', message: 'La lista de tickets a facturar esta vacia'}
     }else if(tipo === 'ERRGEN'){
         return {...fdata.snackbar,tipo:tipo, open:true, severity:'error', message: 'Por el momento el sistema experimenta problemas de comunicación con nuestra base de datos, por favor inténtelo más tarde o pongase en contacto con nosotros en facturamicompra@t3b.com.mx, adjuntando sus datos fiscales y copia de su ticket de compra'}
+    }else if(tipo === 'NDET'){
+        return {...fdata.snackbar,tipo:tipo, open:true, severity:'error', message: 'Por el momento el sistema experimenta problemas para obtener el detalle del ticket, por favor inténtelo más tarde o pongase en contacto con nosotros en facturamicompra@t3b.com.mx, adjuntando sus datos fiscales y copia de su ticket de compra'}
     }
     /**************************************Genericos************************************************** */
    
@@ -87,6 +89,10 @@ export  function setSnackbar(fdata, tipo){
         return {...fdata.snackbar,tipo:tipo, open:true, severity:'warning', message: 'Este ticket está en proceso de facturación, en breve le haremos llegar su comprobante a su cuenta de correo electrónico'}
     } else if(tipo ==='TKA'){
         return {...fdata.snackbar,tipo:tipo, open:true, severity:'success', message: 'El ticket fué agregado'}
+    } else if(tipo ==='TKAPS'){
+        return {...fdata.snackbar,tipo:tipo, open:true, severity:'info', message: 'El ticket fué agregado, Recuerda que solo se facturara la comisión por ser un Pago de Servicio'}
+    } else if(tipo ==='NPS'){
+        return {...fdata.snackbar,tipo:tipo, open:true, severity:'error', message: 'Ticket no facturable, Este ticket no es válido por que es un Pago de Servicio y no tiene comisión'}
     } else if(tipo === 'TKYA'){
         return {...fdata.snackbar,tipo:tipo, open:true, severity:'error',   message: 'El ticket ya se encuentra en la lista de validación'}
     }    
