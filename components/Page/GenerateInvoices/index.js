@@ -44,7 +44,7 @@ export default function GenerateInvoices(){
         if(input.rfc !== ''){
             setFdata({...fdata,loading: true})
             setInput({rfc:'', correo:'', razonSocial:'', correo2:'', usoCFDI: fdata.usosCFDI[0].value, regimenFiscal: fdata.RegimenesFiscales[0].value, domicilio: {calle:'', numExt:'', numInt:'', colonia: '', munAlc: '', estado: '', pais:'', cp:''}})
-            await axios.post('http://localhost:8082/t3b-fact-das/cliente',{},{...fdata.header, params: { rfc: input.rfc } })
+            await axios.post('http://172.206.221.140:8082/t3b-fact-das/cliente',{},{...fdata.header, params: { rfc: input.rfc } })
             .then(function (response) {
                 const cliente =  response.data;
                 if(cliente){
@@ -72,9 +72,9 @@ export default function GenerateInvoices(){
                     const validaC = validaCaptura(captura)                 
                     if(validaC === '') {
                         setFdata({...fdata,loading: true})
-                        await axios.post('http://localhost:8081/t3b-fact-ticket/agregarTicket',captura ,fdata.header)
+                        await axios.post('http://172.206.221.140:8081/t3b-fact-ticket/agregarTicket',captura ,fdata.header)
                         //await axios.post('https://appticktpt3b.azurewebsites.net/t3b-fact-ticket/agregarTicket',captura ,fdata.header)
-                        .then(function (response) {
+                        .then(function (response) {s
                             if(response.data !== null && response.data !== ''){
                                 if(response.data.folio != null && response.data.folio != ''){
                                     if(response.data.folio.includes('F:')){
@@ -161,7 +161,7 @@ export default function GenerateInvoices(){
             const validaD= validaDatos(input)
             if(validaD === ''){
                 setFdata({...fdata,loading: true})
-                await axios.post('http://localhost:8081/t3b-fact-ticket/generarFactura',{
+                await axios.post('http://172.206.221.140:8081/t3b-fact-ticket/generarFactura',{
                 //await axios.post('https://appticktpt3b.azurewebsites.net/t3b-fact-ticket/generarFactura',{
                     tickets: tickets,
                     fclientes: input
