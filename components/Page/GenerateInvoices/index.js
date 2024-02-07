@@ -74,7 +74,7 @@ export default function GenerateInvoices(){
                         setFdata({...fdata,loading: true})
                         await axios.post('http://172.206.221.140:8081/t3b-fact-ticket/agregarTicket',captura ,fdata.header)
                         //await axios.post('https://appticktpt3b.azurewebsites.net/t3b-fact-ticket/agregarTicket',captura ,fdata.header)
-                        .then(function (response) {s
+                        .then(function (response) {
                             if(response.data !== null && response.data !== ''){
                                 if(response.data.folio != null && response.data.folio != ''){
                                     if(response.data.folio.includes('F:')){
