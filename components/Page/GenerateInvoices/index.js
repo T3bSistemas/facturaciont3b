@@ -172,7 +172,6 @@ export default function GenerateInvoices(){
                         const errors = tikets.filter(function (tiket) {return  tiket.folio === null || tiket.folio === ''});
                         if(errors.length === 0){                        
                             setFdata({...fdata,loading:false, snackbar: setSnackbar(fdata,'OK')}) 
-                            setTickets([])                     
                         }else {                            
                             if(errors[0].xml !== null){
                                 setFdata({...fdata,loading:false, snackbar:  {...fdata.snackbar,tipo:'ERROR', open:true, severity:'error',   message: errors[0].xml} })
@@ -180,6 +179,7 @@ export default function GenerateInvoices(){
                                 setFdata({...fdata,loading:false, snackbar: setSnackbar(fdata,'SEP')})
                             }                  
                         }
+                        setTickets([])
                     }else{                        
                         setFdata({...fdata,loading:false, snackbar: setSnackbar(fdata,'ERRGEN')})
                     }                    
