@@ -28,7 +28,7 @@ const colums=[
 export default function ReprintInvoice(){
     const fdata                     = useFContext();
     const setFdata                  = useSetFContext();
-    const [input, setInput]         = useState({tipo: 1, folio:0, serie:'', rfc:''})     
+    const [input, setInput]         = useState({tipo: 2, folio:0, serie:'', rfc:''})     
     const [rows, setRows]           = useState([])
     const [correos, setCorreos]     = useState({to:'', toReply: ''})
 
@@ -116,7 +116,7 @@ export default function ReprintInvoice(){
             <GridText text={'BIENVENIDO A NUESTRO SISTEMA DE FACTURACIÓN'}                                                                                      variant={'h5'} component={'h1'} aling='center' separation={0} xs={12} md={12}/>
             <GridText text={'El periodo de vigencia para reimpresión o reenvio de factura no debe ser mayor a 30 días naturales en que se efectuó su compra'}   variant={'h6'} component={'h6'} aling='center' separation={0} xs={12} md={12}/>
             <GridText text={'Impresión y Envío de Facturas'}   variant={'h6'} component={'h6'} aling='center' separation={0} xs={12} md={12}/>
-            <GridRadioGrups radios={[{label:'Factura', value:1},{label:'RFC', value:2}]} select={input.tipo} action={({target})=>{setInput({...input,tipo:parseInt(target.value)});  setRows([]);}} xs={12} md={3}/>
+            <GridRadioGrups radios={[{label:'RFC', value:2},{label:'Factura', value:1}]} select={input.tipo} action={({target})=>{setInput({...input,tipo:parseInt(target.value)});  setRows([]);}} xs={12} md={3}/>
             {(input.tipo === 1)?
                 <>
                 <GridTextFiled id={'folio'} type={'number'}  label={'Folio'} value={input.folio} action={({target})=>{setInput({...input,folio:(target.value === '')?0:parseInt(target.value)})}}   variant={'standard'} focused={true} required={true} fullWidth={true} placeholder={'123'} error={(fdata.snackbar.tipo === 'IFOL')} xs={12} md={3} />
@@ -127,7 +127,7 @@ export default function ReprintInvoice(){
                 <GridTextFiled id={'rfcR'}  label={'RFC'}   value={input.rfc}   action={({target})=>{setInput({...input,rfc:target.value.toUpperCase()})}} variant={'standard'} focused={true} required={true} fullWidth={true} placeholder={'RFC'} error={(fdata.snackbar.tipo === 'IRFC')} xs={12} md={6} />
             }    
 
-            <GridLoadingButton label={'Buscar Folios'} click={buscar} loading={fdata.loading} variant={'contained'} icon={<ManageSearchOutlinedIcon />} color={'info'} fullWidth={false} size={'medium'} xs={12} md={3}/>
+            <GridLoadingButton label={'Buscar facturas'} click={buscar} loading={fdata.loading} variant={'contained'} icon={<ManageSearchOutlinedIcon />} color={'info'} fullWidth={false} size={'medium'} xs={12} md={3}/>
      
             {(rows.length > 0)?
                 (input.tipo === 1)?

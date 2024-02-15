@@ -10,7 +10,7 @@ import { validaCaptura, validaDatos }               from './Funciones'
 
 import { Grid, Typography, Accordion, Box ,
          AccordionSummary, AccordionDetails, 
-         Popover, IconButton}               from '@mui/material';
+         Popover, IconButton, Alert, Stack}         from '@mui/material';
 
 import ExpandMoreIcon                               from '@mui/icons-material/ExpandMore';
 import DeleteOutlineOutlinedIcon                    from '@mui/icons-material/DeleteOutlineOutlined';
@@ -196,12 +196,14 @@ export default function GenerateInvoices(){
             setFdata({...fdata,loading:false, snackbar: setSnackbar(fdata,'TKV')})
         }
     }
-
+    
     return( 
         <Grid container >
             <GridText text={'BIENVENIDO A NUESTRO SISTEMA DE FACTURACIÓN'}                                                                             variant={'h5'} component={'h1'} aling='center' separation={2} xs={12} md={12}/>
             <GridText text={'Recuerda que el periodo de vigencia en la facturación no debe ser mayor a 30 días naturales en que se efectuó su compra'} variant={'h6'} component={'h6'} aling='center' separation={0} xs={12} md={12}/>
-            
+            <Stack sx={{ width: '100%' }} spacing={2}>
+               <Alert severity="warning" >Los campos marcados con <b>*</b> son obligatorios.</Alert>
+            </Stack>
             <Grid item xs={0} md={1}/>
                 <GridTextFiled id={'rfc'}       label={(fdata.loading)?'Espera..':'R:F:C'}                 actionOnBlur={rfc}                                                                                               value={input.rfc}    action={({target})=>{setInput({...input,rfc:target.value.toUpperCase()})}}     variant={'standard'} focused={true} required={true} fullWidth={true}                                  error={(fdata.snackbar.tipo === 'R')}  disabled={fdata.loading} xs={6} md={3} />
                 <GridTextFiled id={'correo'}    label={(fdata.loading)?'Espera..':'Correo electrónico'}    actionOnBlur={()=>{setHabilitar( (validaCaptura(captura) === '')?(validaDatos(input) === '')?false:true:true)}}  value={input.correo} action={({target})=>{setInput({...input,correo:target.value})}}  variant={'standard'} focused={true} required={true} fullWidth={true} placeholder={'correo@mail.com'}  error={(fdata.snackbar.tipo === 'C')}  disabled={fdata.loading} xs={6} md={3} />
