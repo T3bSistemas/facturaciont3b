@@ -116,13 +116,13 @@ export default function ReprintInvoice(){
     return (
         <Grid container mt={8}>
             <GridText text={'BIENVENIDO A NUESTRO SISTEMA DE FACTURACIÓN'}                                                                                      variant={'h5'} component={'h1'} aling='center' separation={0} xs={12} md={12}/>
-            <GridText text={'El periodo de vigencia para reimpresión o reenvio de factura no debe ser mayor a 30 días naturales en que se efectuó su compra'}   variant={'h6'} component={'h6'} aling='center' separation={0} xs={12} md={12}/>
+            <GridText text={'El periodo de vigencia para reimpresión o reenvío de factura no debe ser mayor a 30 días naturales en que se efectuó su compra'}   variant={'h6'} component={'h6'} aling='center' separation={0} xs={12} md={12}/>
             <GridText text={'Impresión y Envío de Facturas'}   variant={'h6'} component={'h6'} aling='center' separation={0} xs={12} md={12}/>
             <GridRadioGrups radios={[{label:'RFC', value:2},{label:'Factura', value:1}]} select={input.tipo} action={({target})=>{setInput({...input,tipo:parseInt(target.value)});  setRows([]);}} xs={12} md={3}/>
             {(input.tipo === 1)?
                 <>
-                <GridTextFiled id={'folio'} type={'number'}  label={'Folio'} value={input.folio} action={({target})=>{setInput({...input,folio:(target.value === '')?0:parseInt(target.value)})}}   variant={'standard'} focused={true} required={true} fullWidth={true} placeholder={'123'} error={(fdata.snackbar.tipo === 'IFOL')} xs={12} md={3} />
                 <GridTextFiled id={'serie'}                  label={'Serie'} value={input.serie} action={({target})=>{setInput({...input,serie:target.value.toUpperCase()})}}                                     variant={'standard'} focused={true} required={true} fullWidth={true} placeholder={'AAA'} error={(fdata.snackbar.tipo === 'ISER')} xs={12} md={3} />
+                <GridTextFiled id={'folio'} type={'number'}  label={'Folio'} value={input.folio} action={({target})=>{setInput({...input,folio:(target.value === '')?0:parseInt(target.value)})}}   variant={'standard'} focused={true} required={true} fullWidth={true} placeholder={'123'} error={(fdata.snackbar.tipo === 'IFOL')} xs={12} md={3} />
                 </>
                 :
                 (input.tipo === 2)&&
