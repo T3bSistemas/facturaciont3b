@@ -45,7 +45,7 @@ export default function GenerateInvoices(){
             setFdata({...fdata,loading: true})
             setInput({rfc:'', correo:'', razonSocial:'', correo2:'', usoCFDI: fdata.usosCFDI[0].value, regimenFiscal: fdata.RegimenesFiscales[0].value, domicilio: {calle:'', numExt:'', numInt:'', colonia: '', munAlc: '', estado: '', pais:'', cp:''}})
             //await axios.post('http://172.206.221.140:8082/t3b-fact-das/cliente',{},{...fdata.header, params: { rfc: input.rfc } })
-            await axios.post('https://appdashboard3b.azurewebsites.net/t3b-fact-das/cliente',{},{...fdata.header, params: { rfc: input.rfc } })
+            await axios.post(process.env.NEXT_PUBLIC_API_DASH+'/t3b-fact-das/cliente',{},{...fdata.header, params: { rfc: input.rfc } })
             .then(function (response) {
                 const cliente =  response.data;
                 if(cliente){
