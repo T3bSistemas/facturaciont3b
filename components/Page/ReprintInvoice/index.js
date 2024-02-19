@@ -37,8 +37,7 @@ export default function ReprintInvoice(){
         setFdata({...fdata,loading: true})       
         if( (input.tipo === 1 && input.folio > 0 && input.serie !== '') || (input.tipo === 2)){
             if( (input.tipo === 2 && input.rfc !== '') || (input.tipo === 1)){
-                //axios.post('http://172.206.221.140:8082/t3b-fact-das/reimpresion'
-                axios.post('https://appdashboard3b.azurewebsites.net/t3b-fact-das/reimpresion'
+                axios.post(process.env.NEXT_PUBLIC_API_DASH+'/t3b-fact-das/reimpresion'
                 ,input
                 ,fdata.header)
                 .then(function (response) {
@@ -87,8 +86,7 @@ export default function ReprintInvoice(){
             if(correos.to !== '' && correos.to.includes('@')){                
                 if( (correos.toReply === '') || (correos.toReply !== '' && correos.toReply.includes('@'))){   
                     setFdata({...fdata,loading: true})                
-                    //await axios.post('http://172.206.221.140:8082/t3b-fact-das/correo'
-                    await axios.post('https://appdashboard3b.azurewebsites.net/t3b-fact-das/correo'
+                    await axios.post(process.env.NEXT_PUBLIC_API_DASH+'/t3b-fact-das/correo'
                     ,{}
                     ,{...fdata.header, params: { uuid: factura.uuid , to: correos.to, toReply: correos.toReply }})
                     .then(function (response) {
