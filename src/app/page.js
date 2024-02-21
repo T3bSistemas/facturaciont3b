@@ -22,7 +22,6 @@ export default function Home() {
           key="desc"
         />
         <link rel="icon" href="/img/favicon.ico" sizes="any" />
-        <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> </meta>
       </Head>  
       <FacUserProvider />
     </Box>
