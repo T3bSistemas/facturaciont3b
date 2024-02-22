@@ -21,6 +21,10 @@ export default function Home() {
           content="Facturacion en linea de clientes"
           key="desc"
         />
+        <meta
+          name="Strict-Transport-Security"
+          value="max-age=31536000; includeSubdomains"
+        />
         <link rel="icon" href="/img/favicon.ico" sizes="any" />
       </Head>  
       <FacUserProvider />
