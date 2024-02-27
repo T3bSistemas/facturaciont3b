@@ -27,12 +27,12 @@ export default function Start(){
                 <Page page={page} setPage={setPage}/>
                 :
                 <Grid container spacing={2}>
-                    <GridImage src={img64('Logo3b')} width={250} height={100} widthMatches={1} heightMatches={1} alt={'Imagen Logo 3B'} xs={12} md={6} separation={8} />
+                    <GridImage src={img64('Logo3b')} width={350} height={100} widthMatches={1} heightMatches={1} alt={'Imagen Logo 3B'} xs={12} md={6} separation={8} />
                     <GridImage infoAdd={<Typography variant='h6' textAlign='center' mt={1}><b>¿Qué datos necesito de mi ticket?</b></Typography>} src={img64('ticket')} width={50} height={50} widthMatches={50} heightMatches={50} alt={'Informacion Ticket'} xs={12} md={6} separation={3} click={()=>{setModal(true)}} link={'#'}/>
                     <Grid item xs={12} md={6}>
                         <Item>
                             <Typography variant={'h4'} component={'h1'} textAlign={'center'} mt={1} >
-                                <b>FACTURACIÓN EN LINEA</b> 
+                                <b>FACTURACIÓN EN LÍNEA</b> 
                             </Typography>
                             <Typography variant={'h6'} component={'h6'} textAlign={'center'} mt={1} >
                                 Versión 4.0
