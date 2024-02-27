@@ -71,11 +71,12 @@ export  function setSnackbar(fdata, tipo){
     /******************************************catch Axios********************************************************/
     //AL BUSCAR RFC EN bd
     else if(tipo === 'RFCE'){
-        return {...fdata.snackbar,tipo:tipo, open:true, severity:'error',   message: 'El sistema está experimentado problemas para recuperar su RFC, inténtelo más tarde o póngase en contacto con nosotros en facturamicompra@t3b.com.mx'}
+        return {...fdata.snackbar,tipo:tipo, open:true, severity:'error',   message: 'El sistema está experimentando problemas para recuperar tu RFC, inténtalo más tarde o pónte en contacto con nosotros en facturamicompra@t3b.com.mx'}
     }  
     // AL DE AGREGAR TICKET
     else if(tipo.includes('ERRAGREGAR-')){
-        return {...fdata.snackbar,tipo:tipo, open:true, severity:'error',   message: 'Error al validar Ticket('+tipo.replace('ERRAGREGAR-','')+'), inténtelo más tarde o póngase en contacto con nosotros en facturamicompra@t3b.com.mx '}
+        //return {...fdata.snackbar,tipo:tipo, open:true, severity:'error',   message: 'Error al validar Ticket('+tipo.replace('ERRAGREGAR-','')+'), inténtelo más tarde o póngase en contacto con nosotros en facturamicompra@t3b.com.mx '}
+        return {...fdata.snackbar,tipo:tipo, open:true, severity:'error',   message: 'Error al validar Ticket, inténtelo más tarde o póngase en contacto con nosotros en facturamicompra@t3b.com.mx '}
     } 
     /******************************************catch Axios********************************************************/
     /**********************************************VALIDACIONES AGREGAR TICKET***************************************** */
@@ -86,7 +87,7 @@ export  function setSnackbar(fdata, tipo){
     } else if(tipo === 'EXIT'){
         return {...fdata.snackbar,tipo:tipo, open:true, severity:'warning', message: 'Este ticket ya fué facturado anteriormente, valide su información'}
     }  else if(tipo === 'PRO'){
-        return {...fdata.snackbar,tipo:tipo, open:true, severity:'warning', message: 'Este ticket está en proceso de facturación, en breve le haremos llegar su comprobante a su cuenta de correo electrónico'}
+        return {...fdata.snackbar,tipo:tipo, open:true, severity:'warning', message: 'Este ticket está en proceso de facturación, en breve le haremos llegar el comprobante a su cuenta de correo electrónico'}
     } else if(tipo ==='TKA'){
         return {...fdata.snackbar,tipo:tipo, open:true, severity:'success', message: 'El ticket fué agregado'}
     } else if(tipo ==='TKAPS'){

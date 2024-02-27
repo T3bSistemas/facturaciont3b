@@ -200,84 +200,89 @@ export default function GenerateInvoices(){
             <GridText text={'BIENVENIDO A NUESTRO SISTEMA DE FACTURACIÓN'}                                                                             variant={'h5'} component={'h1'} aling='center' separation={2} xs={12} md={12}/>
             <GridText text={'Recuerda que el periodo de vigencia en la facturación no debe ser mayor a 30 días naturales en que se efectuó su compra'} variant={'h6'} component={'h6'} aling='center' separation={0} xs={12} md={12}/>
             <Stack sx={{ width: '100%' }} spacing={2}>
-               <Alert severity="warning" >Los campos marcados con <b>*</b> son obligatorios.</Alert>
+               <Alert severity="info" >
+                 Paso 1: Ingresa tus datos fiscales.
+                Si has facturado anteriormente con nosotros, al ingresar tu RFC podemos recuperar tu información, corrobora que esta sea correcta.
+               </Alert>
+               <Alert severity="warning" >Los campos marcados con * son obligatorios.</Alert>
             </Stack>
             <Grid item xs={0} md={1}/>
-                <GridTextFiled id={'rfc'}       label={(fdata.loading)?'Espera..':'R:F:C'}                 actionOnBlur={rfc}                                                                                               value={input.rfc}    action={({target})=>{setInput({...input,rfc:target.value.toUpperCase()})}}     variant={'standard'} focused={true} required={true} fullWidth={true}                                  error={(fdata.snackbar.tipo === 'R')}  disabled={fdata.loading} xs={6} md={3} />
+                <GridTextFiled id={'rfc'}       label={(fdata.loading)?'Espera..':'RFC'}                 actionOnBlur={rfc}                                                                                               value={input.rfc}    action={({target})=>{setInput({...input,rfc:target.value.toUpperCase()})}}     variant={'standard'} focused={true} required={true} fullWidth={true}                                  error={(fdata.snackbar.tipo === 'R')}  disabled={fdata.loading} xs={6} md={3} />
                 <GridTextFiled id={'correo'}    label={(fdata.loading)?'Espera..':'Correo electrónico'}    actionOnBlur={()=>{setHabilitar( (validaCaptura(captura) === '')?(validaDatos(input) === '')?false:true:true)}}  value={input.correo} action={({target})=>{setInput({...input,correo:target.value})}}  variant={'standard'} focused={true} required={true} fullWidth={true} placeholder={'correo@mail.com'}  error={(fdata.snackbar.tipo === 'C')}  disabled={fdata.loading} xs={6} md={3} />
                 <GirdSelect focused={true} fullWidth={true} inputLabel={(fdata.loading)?'Espera..':'Uso CFDI *'} id={'cfdi'} value={input.usoCFDI} action={(event)=>{setInput({...input,usoCFDI: event.target.value})}} items={fdata.usosCFDI}/>
             <Grid item xs={1.5} md={2}/>
 
             <Grid item xs={0} md={1}/>
-                <GridTextFiled id={'nomraz'}    label={(fdata.loading)?'Espera..':'Nombre/Razon Social'}    actionOnBlur={()=>{setHabilitar( (validaCaptura(captura) === '')?(validaDatos(input) === '')?false:true:true)}} value={input.razonSocial}    action={({target})=>{setInput({...input,razonSocial:target.value.toUpperCase()})}} variant={'standard'} focused={true} required={true} fullWidth={true}                                 error={(fdata.snackbar.tipo === 'S')}  disabled={fdata.loading}   xs={6} md={3} />
+                <GridTextFiled id={'nomraz'}    label={(fdata.loading)?'Espera..':'Nombre/Razón Social'}    actionOnBlur={()=>{setHabilitar( (validaCaptura(captura) === '')?(validaDatos(input) === '')?false:true:true)}} value={input.razonSocial}    action={({target})=>{setInput({...input,razonSocial:target.value.toUpperCase()})}} variant={'standard'} focused={true} required={true} fullWidth={true}                                 error={(fdata.snackbar.tipo === 'S')}  disabled={fdata.loading}   xs={6} md={3} />
                 <GridTextFiled id={'correo2'}   label={(fdata.loading)?'Espera..':'Correo electrónico 2'}                                                                                                                   value={input.correo2}        action={({target})=>{setInput({...input,correo2:target.value})}}     variant={'standard'} focused={true} required={false} fullWidth={true} placeholder={'correo@mail.com'}                                          disabled={fdata.loading}   xs={6} md={3} />
-                <GirdSelect focused={true} fullWidth={true} inputLabel={(fdata.loading)?'Espera..':'Regimen Fiscal *'} id={'regfis'} value={input.regimenFiscal} action={(event)=>{setInput({...input,regimenFiscal: event.target.value})}} items={fdata.RegimenesFiscales}/>
+                <GirdSelect focused={true} fullWidth={true} inputLabel={(fdata.loading)?'Espera..':'Régimen Fiscal *'} id={'regfis'} value={input.regimenFiscal} action={(event)=>{setInput({...input,regimenFiscal: event.target.value})}} items={fdata.RegimenesFiscales}/>
             <Grid item xs={1.5} md={2}/>
 
             <Grid item xs={12} md={12} mt={4}>
-                <Accordion>
-                    <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls='panel1a-content' id='domicilio'>
-                        <Typography variant='h6'  textAlign='center'><b>Domicilio *</b></Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                       <Grid container >
-                            <GridTextFiled id={'calle'}     label={(fdata.loading)?'Espera..':'Calle'}                 value={input.domicilio.calle}      action={({target})=>{setInput({...input,domicilio:{...input.domicilio,calle:target.value}})}}    variant={'standard'} focused={true} required={false} fullWidth={true} disabled={fdata.loading} xs={6} md={3} />
-                            <GridTextFiled id={'numExt'}    label={(fdata.loading)?'Espera..':'Numero Exterior'}       value={input.domicilio.numExt}     action={({target})=>{setInput({...input,domicilio:{...input.domicilio,numExt:target.value}})}}   variant={'standard'} focused={true} required={false} fullWidth={true} disabled={fdata.loading} xs={6} md={3} />
-                            <GridTextFiled id={'numInt'}    label={(fdata.loading)?'Espera..':'Numero Interior'}       value={input.domicilio.numInt}     action={({target})=>{setInput({...input,domicilio:{...input.domicilio,numInt:target.value}})}}   variant={'standard'} focused={true} required={false} fullWidth={true} disabled={fdata.loading} xs={6} md={3} />
-                            <GridTextFiled id={'colonia'}   label={(fdata.loading)?'Espera..':'Colonia'}               value={input.domicilio.colonia}    action={({target})=>{setInput({...input,domicilio:{...input.domicilio,colonia:target.value}})}}  variant={'standard'} focused={true} required={false} fullWidth={true} disabled={fdata.loading} xs={6} md={3} />
-                        </Grid>
-                        <Grid container >
-                            <GridTextFiled id={'mun-alc'}   label={(fdata.loading)?'Espera..':'Municipio/Alcaldia'}                                                                                                                     value={input.domicilio.munAlc}      action={({target})=>{setInput({...input,domicilio:{...input.domicilio,munAlc:target.value}})}}  variant={'standard'} focused={true} required={false} fullWidth={true} disabled={fdata.loading}                                           xs={6} md={3} />
-                            <GridTextFiled id={'estado'}    label={(fdata.loading)?'Espera..':'Estado'}                                                                                                                                 value={input.domicilio.estado}      action={({target})=>{setInput({...input,domicilio:{...input.domicilio,estado:target.value}})}}  variant={'standard'} focused={true} required={false} fullWidth={true} disabled={fdata.loading}                                           xs={6} md={3} />
-                            <GridTextFiled id={'pais'}      label={(fdata.loading)?'Espera..':'Pais'}                                                                                                                                   value={input.domicilio.pais}        action={({target})=>{setInput({...input,domicilio:{...input.domicilio,pais:target.value}})}}    variant={'standard'} focused={true} required={false} fullWidth={true} disabled={fdata.loading}                                           xs={6} md={3} />
-                            <GridTextFiled id={'cp'}        label={(fdata.loading)?'Espera..':'Codigo Postal'}         actionOnBlur={()=>{setHabilitar( (validaCaptura(captura) === '')?(validaDatos(input) === '')?false:true:true)}}  value={input.domicilio.cp}          action={({target})=>{(target.value === '' || re.test(target.value))&&setInput({...input,domicilio:{...input.domicilio,cp:target.value}})}}      variant={'standard'} focused={true} required={true}  fullWidth={true} disabled={fdata.loading} error={(fdata.snackbar.tipo === 'P')}  inputProps={{ maxLength: 5 }}   xs={6} md={3} />
-                        </Grid>
-                    </AccordionDetails>
-                </Accordion>
+                <Grid container >
+                    <GridText text={'Domicilio'} variant={'h6'} component={'h6'} aling='left' separation={1} xs={12} md={12}/>
+                </Grid>
+                <Grid container >
+                    <GridTextFiled id={'calle'}     label={(fdata.loading)?'Espera..':'Calle'}                 value={input.domicilio.calle}      action={({target})=>{setInput({...input,domicilio:{...input.domicilio,calle:target.value}})}}    variant={'standard'} focused={true} required={false} fullWidth={true} disabled={fdata.loading} xs={6} md={3} />
+                    <GridTextFiled id={'numExt'}    label={(fdata.loading)?'Espera..':'Número Exterior'}       value={input.domicilio.numExt}     action={({target})=>{setInput({...input,domicilio:{...input.domicilio,numExt:target.value}})}}   variant={'standard'} focused={true} required={false} fullWidth={true} disabled={fdata.loading} xs={6} md={3} />
+                    <GridTextFiled id={'numInt'}    label={(fdata.loading)?'Espera..':'Número Interior'}       value={input.domicilio.numInt}     action={({target})=>{setInput({...input,domicilio:{...input.domicilio,numInt:target.value}})}}   variant={'standard'} focused={true} required={false} fullWidth={true} disabled={fdata.loading} xs={6} md={3} />
+                    <GridTextFiled id={'colonia'}   label={(fdata.loading)?'Espera..':'Colonia'}               value={input.domicilio.colonia}    action={({target})=>{setInput({...input,domicilio:{...input.domicilio,colonia:target.value}})}}  variant={'standard'} focused={true} required={false} fullWidth={true} disabled={fdata.loading} xs={6} md={3} />
+                </Grid>
+                <Grid container >
+                    <GridTextFiled id={'mun-alc'}   label={(fdata.loading)?'Espera..':'Municipio/Alcaldía'}                                                                                                                     value={input.domicilio.munAlc}      action={({target})=>{setInput({...input,domicilio:{...input.domicilio,munAlc:target.value}})}}  variant={'standard'} focused={true} required={false} fullWidth={true} disabled={fdata.loading}                                           xs={6} md={3} />
+                    <GridTextFiled id={'estado'}    label={(fdata.loading)?'Espera..':'Estado'}                                                                                                                                 value={input.domicilio.estado}      action={({target})=>{setInput({...input,domicilio:{...input.domicilio,estado:target.value}})}}  variant={'standard'} focused={true} required={false} fullWidth={true} disabled={fdata.loading}                                           xs={6} md={3} />
+                    <GridTextFiled id={'pais'}      label={(fdata.loading)?'Espera..':'País'}                                                                                                                                   value={input.domicilio.pais}        action={({target})=>{setInput({...input,domicilio:{...input.domicilio,pais:target.value}})}}    variant={'standard'} focused={true} required={false} fullWidth={true} disabled={fdata.loading}                                           xs={6} md={3} />
+                    <GridTextFiled id={'cp'}        label={(fdata.loading)?'Espera..':'Código Postal'}         actionOnBlur={()=>{setHabilitar( (validaCaptura(captura) === '')?(validaDatos(input) === '')?false:true:true)}}  value={input.domicilio.cp}          action={({target})=>{(target.value === '' || re.test(target.value))&&setInput({...input,domicilio:{...input.domicilio,cp:target.value}})}}      variant={'standard'} focused={true} required={true}  fullWidth={true} disabled={fdata.loading} error={(fdata.snackbar.tipo === 'P')}  inputProps={{ maxLength: 5 }}   xs={6} md={3} />
+                </Grid>
             </Grid>
 
             <GridText text={'- Puede agregar todos sus tickets y facturarlos en un solo proceso.'}  variant={'h6'} component={'h6'} aling='center' separation={0} xs={12}  md={12}/>
             <GridText text={'- Los tickets de una misma tienda se calculan en una sola factura.'}   variant={'h6'} component={'h6'} aling='center' separation={0}  xs={12} md={12}/>
             
+            <Stack sx={{ width: '100%' }} spacing={2}>
+                <Alert severity="info" >
+                    Paso 2: Ingresa la información de los tickets. 
+                    Puedes agregar más de un ticket a una misma factura. Los tickets de una misma tienda se calculan en una sola factura. Consulta los campos aquí:
+                    <IconButton aria-label="delete" onClick={()=>{setModal(true)}}>
+                        <ContactSupportOutlinedIcon  onMouseEnter={(event) => {setAnchorEl(event.currentTarget);}} onMouseLeave={()=>{setAnchorEl(null);}}/>
+                    </IconButton>                
+                    <Popover id="mouse-over-popover" open={open} anchorEl={anchorEl} onClose={()=>{setAnchorEl(null);}} disableRestoreFocus
+                        sx={{
+                        pointerEvents: 'none',
+                        }}                    
+                        anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'left',
+                        }}
+                        transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'left',
+                        }}>
+                        <Typography sx={{ p: 1 }}>Datos del ticket necesarios</Typography>
+                    </Popover>       
+                    <ModalTicket modal={modal} setModal={setModal}/>
+                </Alert>
+            </Stack>
+
             <GirdDatePicker label={'Fecha de compra'}  fecha={captura.fechaCompra} accion={(newValue) => setCaptura({...captura,fechaCompra: dayjs(new Date(newValue))?.format('YYYY-MM-DD')})} focused={true} xs={6}  md={4} />
             <GridTextFiled id={'tienda'}        type={'number'} label={(fdata.loading)?'Espera..':'Sucursal'}          actionOnBlur={()=>{setHabilitar( (validaCaptura(captura) === '')?(validaDatos(input) === '')?false:true:true)}} value={captura.tienda}   action={({target})=>{setCaptura({...captura,tienda:dataInteger(target.value)})}}                                   variant={'standard'} focused={true} required={true} fullWidth={true} disabled={fdata.loading} placeholder={'999'}         error={(fdata.snackbar.tipo === 'TND')}                                 xs={6}  md={2} />
-            <GridTextFiled id={'caja'}                          label={(fdata.loading)?'Espera..':'No de caja'}        actionOnBlur={()=>{setHabilitar( (validaCaptura(captura) === '')?(validaDatos(input) === '')?false:true:true)}} value={captura.caja}     action={({target})=>{(target.value === '' || re.test(target.value))&&setCaptura({...captura,caja:target.value})}}  variant={'standard'} focused={true} required={true} fullWidth={true} disabled={fdata.loading} placeholder={'09'}          error={(fdata.snackbar.tipo === 'CJA')} inputProps={{ maxLength: 2 }}   xs={6}  md={2} />
-            <GridTextFiled id={'numTicket'}     type={'number'} label={(fdata.loading)?'Espera..':'No de ticket'}      actionOnBlur={()=>{setHabilitar( (validaCaptura(captura) === '')?(validaDatos(input) === '')?false:true:true)}} value={captura.ticket}   action={({target})=>{setCaptura({...captura,ticket:dataInteger(target.value)})}}                                   variant={'standard'} focused={true} required={true} fullWidth={true} disabled={fdata.loading} placeholder={'999'}         error={(fdata.snackbar.tipo === 'TKT')}                                 xs={6}  md={2} />
+            <GridTextFiled id={'caja'}                          label={(fdata.loading)?'Espera..':'No. de caja'}        actionOnBlur={()=>{setHabilitar( (validaCaptura(captura) === '')?(validaDatos(input) === '')?false:true:true)}} value={captura.caja}     action={({target})=>{(target.value === '' || re.test(target.value))&&setCaptura({...captura,caja:target.value})}}  variant={'standard'} focused={true} required={true} fullWidth={true} disabled={fdata.loading} placeholder={'09'}          error={(fdata.snackbar.tipo === 'CJA')} inputProps={{ maxLength: 2 }}   xs={6}  md={2} />
+            <GridTextFiled id={'numTicket'}     type={'number'} label={(fdata.loading)?'Espera..':'No. de ticket'}      actionOnBlur={()=>{setHabilitar( (validaCaptura(captura) === '')?(validaDatos(input) === '')?false:true:true)}} value={captura.ticket}   action={({target})=>{setCaptura({...captura,ticket:dataInteger(target.value)})}}                                   variant={'standard'} focused={true} required={true} fullWidth={true} disabled={fdata.loading} placeholder={'999'}         error={(fdata.snackbar.tipo === 'TKT')}                                 xs={6}  md={2} />
             <GridTextFiled id={'importe'}       type={'number'} label={(fdata.loading)?'Espera..':'Importe compra'}    actionOnBlur={()=>{setHabilitar( (validaCaptura(captura) === '')?(validaDatos(input) === '')?false:true:true)}} value={captura.total}    action={({target})=>{setCaptura({...captura,total:formatImp(target.value)})}}                                      variant={'standard'} focused={true} required={true} fullWidth={true} disabled={fdata.loading} placeholder={'99,999.99'}   error={(fdata.snackbar.tipo === 'TTL')}                                 xs={12} md={2} />
             
-            <Grid item xs={1} md={3} />
-                <GridLoadingButton label={'Limpiar'} click={()=>{setTickets([])}} loading={fdata.loading} variant={'outlined'} icon={<DeleteOutlineOutlinedIcon />} color={'error'}     fullWidth={false} disabled={false}      xs={4} md={2}/>
-                <GridLoadingButton label={'Agregar'} click={agregar}              loading={fdata.loading} variant={'outlined'} icon={<PostAddOutlinedIcon />}       color={'success'}   fullWidth={false} disabled={habilitar}  xs={4} md={2}/>
-            <Grid item xs={2} md={2}>
-                <IconButton aria-label="delete" onClick={()=>{setModal(true)}}>
-                    <ContactSupportOutlinedIcon  onMouseEnter={(event) => {setAnchorEl(event.currentTarget);}} onMouseLeave={()=>{setAnchorEl(null);}}/>
-                </IconButton>
-                
-                <Popover id="mouse-over-popover" open={open} anchorEl={anchorEl} onClose={()=>{setAnchorEl(null);}} disableRestoreFocus
-                    sx={{
-                    pointerEvents: 'none',
-                    }}                    
-                    anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'left',
-                    }}
-                    transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'left',
-                    }}>
-                    <Typography sx={{ p: 1 }}>Datos del ticket necesarios</Typography>
-                </Popover>       
-                <ModalTicket modal={modal} setModal={setModal}/>                       
-            </Grid>
-            <Grid item xs={1} md={3} />
+            <Grid item xs={2} md={8} />
+            <GridLoadingButton label={'Limpiar'} click={()=>{setTickets([])}} loading={fdata.loading} variant={'outlined'} icon={<DeleteOutlineOutlinedIcon />} color={'error'}     fullWidth={false} disabled={false}      xs={5} md={2}/>
+            <GridLoadingButton label={'Agregar'} click={agregar}              loading={fdata.loading} variant={'outlined'} icon={<PostAddOutlinedIcon />}       color={'success'}   fullWidth={false} disabled={habilitar}  xs={5} md={2}/>
+            
+            
+
             {(fdata.loading === false)&&
                 <GirdBasicTable rows={tickets} colums={fdata.columsFactura} funcion={quitar} xs={12} md={12} mt={3}/>
             }
-            <Grid item xs={1} md={3} />
+            <Grid item xs={2} md={9} />
             {(tickets.length > 0)&&               
-             <GridLoadingButton label={'Generar Factura'} click={()=>{generar()}} loading={fdata.loading} variant={'outlined'} icon={<ReceiptOutlinedIcon />} color={'success'} fullWidth={false} size={'large'} disabled={false}      xs={10} md={6}/>
+             <GridLoadingButton label={'Generar Factura'} click={()=>{generar()}} loading={fdata.loading} variant={'outlined'} icon={<ReceiptOutlinedIcon />} color={'success'} fullWidth={false} size={'large'} disabled={false}      xs={10} md={3}/>
             }
-            <Grid item xs={1} md={3}></Grid>
         </Grid>
     )
 }

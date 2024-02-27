@@ -36,13 +36,13 @@ const questions =[
   },
   {
     id: 5,
-    question: 'Como puedo reenviar o reimprimir mi factura?',
+    question: '¿Como puedo reenviar o reimprimir mi factura?',
     details: 'Desde la pantalla de "Inicio", pulsando la opción "Reimprimir Factura". Existen 2 opciones de búsqueda de facturas, por RFC o folio de factura.'
   },
   {
     id: 6,
     question: 'El sistema no me permite realizar mi facturación',
-    details: 'En el caso de recibir algun mensaje de error por parte del sistema que no sea claro o simplemente no puede realizar su facturación, se puede poner en contacto con con nosotros al correo: <b>facturamicompra@t3b.com.mx'
+    details: 'En el caso de recibir algun mensaje de error por parte del sistema que no sea claro o simplemente no puede realizar su facturación, se puede poner en contacto con con nosotros al correo: facturamicompra@t3b.com.mx'
   },
   {
     id: 7,
@@ -148,10 +148,10 @@ const RegimenesFiscales= [
 const columsFactura=[
   {value: 'Fecha de Compra'},
   {value: 'Sucursal'},
-  {value: 'Numero de Caja'},
-  {value: 'Numero de Ticket'},
+  {value: 'Número de Caja'},
+  {value: 'Número de Ticket'},
   {value: 'Total'},
-  {value: 'Accion'},
+  {value: 'Acción'},
 ]
 
 

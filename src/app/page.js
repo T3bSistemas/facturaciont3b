@@ -11,7 +11,8 @@ export default function Home() {
       //position: 'fixed',
       width: '100%',
       height: '100%',
-      backgroundImage: `url('fondo.jpg')`
+      //backgroundImage: `url('fondo.jpg')`
+      background: '#EBEAEA'
     }}>
       <CssBaseline/>
       <Head>

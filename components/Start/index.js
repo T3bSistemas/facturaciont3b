@@ -12,7 +12,8 @@ import Page                     from '../Page'
 import GridLoadingButton        from '../../fastComponents/Girds/GridLoadingButton'
 import GridText                 from '../../fastComponents/Girds/GridText'
 import GridImage                from '../../fastComponents/Girds/GridImage'
-import ModalTicket              from '../../fastComponents/ModalTicket';  
+import ModalTicket              from '../../fastComponents/ModalTicket';
+import Item from '../../fastComponents/Item'
 
 export default function Start(){
     const fdata                     = useFContext();
@@ -26,9 +27,21 @@ export default function Start(){
                 <Page page={page} setPage={setPage}/>
                 :
                 <Grid container spacing={2}>
-                    <GridText text={'FACTURACIÓN EN LINEA 4.0'} variant={'h4'} component={'h1'} aling='center' separation={8} xs={12} md={6} />
-                    <GridImage infoAdd={<Typography variant='h6' textAlign='center' mt={1}><b>Que datos necesito de mi ticket</b></Typography>} src={img64('ticket')} width={50} height={50} widthMatches={50} heightMatches={50} alt={'Informacion Ticket'} xs={12} md={6} separation={3} click={()=>{setModal(true)}}/>
-                    <ModalTicket modal={modal} setModal={setModal}/>  
+                    <GridImage src={img64('Logo3b')} width={250} height={100} widthMatches={1} heightMatches={1} alt={'Imagen Logo 3B'} xs={12} md={6} separation={8} />
+                    <GridImage infoAdd={<Typography variant='h6' textAlign='center' mt={1}><b>¿Que datos necesito de mi ticket?</b></Typography>} src={img64('ticket')} width={50} height={50} widthMatches={50} heightMatches={50} alt={'Informacion Ticket'} xs={12} md={6} separation={3} click={()=>{setModal(true)}}/>
+                    <Grid item xs={12} md={6}>
+                        <Item>
+                            <Typography variant={'h4'} component={'h1'} textAlign={'center'} mt={1} >
+                                <b>FACTURACIÓN EN LINEA</b> 
+                            </Typography>
+                            <Typography variant={'h6'} component={'h6'} textAlign={'center'} mt={1} >
+                                Versión 4.0
+                            </Typography>
+                        </Item>
+                    </Grid>
+                    <Grid item xs={0} md={6} />
+                    <ModalTicket modal={modal} setModal={setModal}/> 
+
                     <Grid item xs={12} md={6} mt={5}>                        
                         <Grid container spacing={1}>
 
@@ -43,15 +56,29 @@ export default function Start(){
                             <Grid item xs={1} md={2}></Grid>
                             <GridLoadingButton label={<Typography variant='h5'>PREGUNTAS FRECUENTES</Typography>}   click={()=>{setPage('PF')}} loading={false} variant={'contained'}  color={'error'} fullWidth={true} size={'large'} xs={10} md={8}/>
                             <Grid item xs={1} md={2}></Grid>
-                            <GridImage infoAdd={<>
-                                    <Typography variant='h6'>
-                                        <b>Si presenta algún problema al realizar su factura o descargar su comprobante pongase en contacto con nosotros en la siguiente cuenta de correo electrónico</b>
+
+                            <Grid item xs={1} md={2}></Grid>
+                            <Grid item xs={10} md={8}>
+                                <Item>
+                                    <>
+                                    <Typography variant={'h6'} component={'h6'} textAlign={'center'} mt={1} >
+                                        <b>Si tuviste algún problema en el proceso de facturación, comunícate con nosotros al correo electrónico:
+                                        <b style={ {color: 'red'} }>facturamicompra@t3b.com.mx</b></b> 
                                     </Typography>
-                                    <Typography variant='h5' mt={2}>
-                                        <b>facturamicompra@t3b.com.mx</b>
-                                    </Typography></>} 
-                            src={img64('SopTec')} width={140} height={160} widthMatches={1} heightMatches={1} alt={'Soporte Tecnico'} xs={12} md={12} separation={3} />
-                         </Grid>
+                                    </>
+                                </Item>
+                            </Grid>
+                            <Grid item xs={1} md={2}></Grid>
+                            <Grid item xs={1} md={2}></Grid>
+                            <Grid item xs={10} md={8}>
+                                <Item>
+                                    <Typography variant={'h6'} component={'h6'} textAlign={'center'} mt={1} >
+                                        <b>Quizá ya tenemos una respuesta para ti, visita nuestra sección de <b style={ {color: 'red'} }>Preguntas frecuentes</b>.</b>
+                                    </Typography>
+                                </Item>
+                            </Grid>
+                            <Grid item xs={1} md={2}></Grid>
+                        </Grid>
                     </Grid>
                     <GridImage src={img64('pintV')} width={450} height={450} widthMatches={1} heightMatches={1} alt={'Imagen Principal'} xs={12} md={6} separation={3} />
                 </Grid>
