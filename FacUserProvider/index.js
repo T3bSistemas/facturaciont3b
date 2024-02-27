@@ -36,7 +36,7 @@ const questions =[
   },
   {
     id: 5,
-    question: '¿Como puedo reenviar o reimprimir mi factura?',
+    question: '¿Cómo puedo reenviar o reimprimir mi factura?',
     details: 'Desde la pantalla de "Inicio", pulsando la opción "Reimprimir Factura". Existen 2 opciones de búsqueda de facturas, por RFC o folio de factura.'
   },
   {
