@@ -11,6 +11,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className} style={{background: '#EBEAEA'}} >{children}</body>
+      <footer>
+		        <span id="siteseal"><script  type="text/javascript" src="https://seal.starfieldtech.com/getSeal?sealID=MmocUzxFkUu7etk3ohTqmsREF08fcjwGxUjEA0cHyc06qTG8e3ujW6kNKui6"></script></span>
+      </footer>
     </html>
   )
 }

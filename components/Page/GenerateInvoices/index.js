@@ -196,7 +196,7 @@ export default function GenerateInvoices(){
     return( 
         <Grid container >
             <GridText text={'BIENVENIDO A NUESTRO SISTEMA DE FACTURACIÓN'}                                                                             variant={'h5'} component={'h1'} aling='center' separation={2} xs={12} md={12}/>
-            <GridText text={'Recuerda que el periodo de vigencia en la facturación no debe ser mayor a 30 días naturales en que se efectuó su compra'} variant={'h8'} component={'h8'} aling='center' separation={0} xs={12} md={12}/>
+            <GridText text={'Recuerda que el periodo de vigencia en la facturación no debe ser mayor a 30 días naturales en que se efectuó tu compra'} variant={'h8'} component={'h8'} aling='center' separation={0} xs={12} md={12}/>
             <Stack sx={{ width: '100%' }} spacing={2}>
                <Alert severity="info" >
                  Paso 1: Ingresa tus datos fiscales.
