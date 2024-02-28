@@ -43,14 +43,13 @@ export default function Leyout({props, page, setPage}) {
     <Fragment>
       <CssBaseline />
       <HideOnScroll {...props}>
-        <AppBar color="transparent">
+        <AppBar style={{background : '#EBEAEA'}}>
           <Toolbar>
-            <Grid container spacing={2}>
+            <Grid container spacing={1}>
               <Grid item xs={0} md={1}></Grid>
-                <GridLoadingButton label={<b>Inicio</b>}                             click={()=>{setPage('inicio')}} loading={(page === 'inicio')}    variant={'elevated'} icon={<ArrowBackIosNewOutlinedIcon />}   fullWidth={true} size={(matches)?'large':'large'} xs={2} md={2}/>
-                <Grid item xs={7} md={5}></Grid>
-                {/* <GridImage src={Logo} width={50} height={50} widthMatches={50} heightMatches={50} alt={'Logo'} xs={4} md={4}/> */}
-                <GridLoadingButton label={<b>Preguntas Frecuentes <HelpIcon /></b>}  click={()=>{setPage('PF')}}     loading={(page === 'contained')} variant={'elevated'}                                          fullWidth={true} size={(matches)?'large':'large'} xs={3} md={3}/>
+                <GridLoadingButton label={<b>Inicio</b>}                             click={()=>{setPage('inicio')}} loading={(page === 'inicio')}    variant={'outlined'} icon={<ArrowBackIosNewOutlinedIcon />} color={'error'} fullWidth={true} size={(matches)?'large':'large'} xs={2} md={2}/>
+                <Grid item xs={6} md={5}></Grid>
+                <GridLoadingButton label={<b>Preguntas Frecuentes <HelpIcon /></b>}  click={()=>{setPage('PF')}}     loading={(page === 'contained')} variant={'outlined'}                                        color={'error'} fullWidth={true} size={(matches)?'large':'large'} xs={3} md={3}/>
               <Grid item xs={0} md={1}></Grid>
             </Grid>
           </Toolbar>

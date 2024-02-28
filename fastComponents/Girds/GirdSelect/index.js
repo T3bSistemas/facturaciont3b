@@ -1,9 +1,9 @@
 import { Grid, InputLabel, MenuItem, FormControl, Select} from '@mui/material';
 import Item from '../../Item'
 
-export default function GirdSelect({ focused, fullWidth, inputLabel, id, value, action, items}){
+export default function GirdSelect({ focused, fullWidth, inputLabel, id, value, action, items, xs, md}){
     return (
-        <Grid item xs={6} md={3}>
+        <Grid item xs={(xs)?xs:12} md={(md)?md:12}>
             <Item>
                 <FormControl variant='standard'  focused={focused} fullWidth={(fullWidth)?fullWidth:false}
                 sx={{

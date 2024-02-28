@@ -8,11 +8,9 @@ import { isNotAll, isNull, dataInteger, formatImp}  from '../../../UtilFunction/
 import {setSnackbar}                                from '../../../UtilFunction/OpenSnackbar'
 import { validaCaptura, validaDatos }               from './Funciones'
 
-import { Grid, Typography, Accordion, Box ,
-         AccordionSummary, AccordionDetails, 
+import { Grid, Typography, Divider, 
          Popover, IconButton, Alert, Stack}         from '@mui/material';
 
-import ExpandMoreIcon                               from '@mui/icons-material/ExpandMore';
 import DeleteOutlineOutlinedIcon                    from '@mui/icons-material/DeleteOutlineOutlined';
 import PostAddOutlinedIcon                          from '@mui/icons-material/PostAddOutlined';
 import ContactSupportOutlinedIcon                   from '@mui/icons-material/ContactSupportOutlined';
@@ -202,26 +200,29 @@ export default function GenerateInvoices(){
             <Stack sx={{ width: '100%' }} spacing={2}>
                <Alert severity="info" >
                  Paso 1: Ingresa tus datos fiscales.
-                Si has facturado anteriormente con nosotros, al ingresar tu RFC podemos recuperar tu información, corrobora que esta sea correcta.
+                Si has facturado anteriormente con nosotros, al ingresar tu RFC podemos recuperar tu información, corrobora que ésta sea correcta.
                </Alert>
                <Alert severity="warning" >Los campos marcados con * son obligatorios.</Alert>
             </Stack>
-            <Grid item xs={0} md={1}/>
-                <GridTextFiled id={'rfc'}       label={(fdata.loading)?'Espera..':'RFC'}                 actionOnBlur={rfc}                                                                                               value={input.rfc}    action={({target})=>{setInput({...input,rfc:target.value.toUpperCase()})}}     variant={'standard'} focused={true} required={true} fullWidth={true}                                  error={(fdata.snackbar.tipo === 'R')}  disabled={fdata.loading} xs={6} md={3} />
-                <GridTextFiled id={'correo'}    label={(fdata.loading)?'Espera..':'Correo electrónico'}    actionOnBlur={()=>{setHabilitar( (validaCaptura(captura) === '')?(validaDatos(input) === '')?false:true:true)}}  value={input.correo} action={({target})=>{setInput({...input,correo:target.value})}}  variant={'standard'} focused={true} required={true} fullWidth={true} placeholder={'correo@mail.com'}  error={(fdata.snackbar.tipo === 'C')}  disabled={fdata.loading} xs={6} md={3} />
-                <GirdSelect focused={true} fullWidth={true} inputLabel={(fdata.loading)?'Espera..':'Uso CFDI *'} id={'cfdi'} value={input.usoCFDI} action={(event)=>{setInput({...input,usoCFDI: event.target.value})}} items={fdata.usosCFDI}/>
-            <Grid item xs={1.5} md={2}/>
-
-            <Grid item xs={0} md={1}/>
-                <GridTextFiled id={'nomraz'}    label={(fdata.loading)?'Espera..':'Nombre/Razón Social'}    actionOnBlur={()=>{setHabilitar( (validaCaptura(captura) === '')?(validaDatos(input) === '')?false:true:true)}} value={input.razonSocial}    action={({target})=>{setInput({...input,razonSocial:target.value.toUpperCase()})}} variant={'standard'} focused={true} required={true} fullWidth={true}                                 error={(fdata.snackbar.tipo === 'S')}  disabled={fdata.loading}   xs={6} md={3} />
-                <GridTextFiled id={'correo2'}   label={(fdata.loading)?'Espera..':'Correo electrónico 2'}                                                                                                                   value={input.correo2}        action={({target})=>{setInput({...input,correo2:target.value})}}     variant={'standard'} focused={true} required={false} fullWidth={true} placeholder={'correo@mail.com'}                                          disabled={fdata.loading}   xs={6} md={3} />
-                <GirdSelect focused={true} fullWidth={true} inputLabel={(fdata.loading)?'Espera..':'Régimen Fiscal *'} id={'regfis'} value={input.regimenFiscal} action={(event)=>{setInput({...input,regimenFiscal: event.target.value})}} items={fdata.RegimenesFiscales}/>
-            <Grid item xs={1.5} md={2}/>
-
+            <Grid item xs={12} md={12} mt={4}>
+                <Grid container >
+                    <GridText text={'Datos fiscales'} variant={'h6'} component={'h6'} aling='left' xs={12} md={12}/>
+                </Grid> 
+                <Grid container >
+                    <GridTextFiled id={'rfc'}       label={(fdata.loading)?'Espera..':'RFC'}                 actionOnBlur={rfc}                                                                                               value={input.rfc}    action={({target})=>{setInput({...input,rfc:target.value.toUpperCase()})}}     variant={'standard'} focused={true} required={true} fullWidth={true}                                  error={(fdata.snackbar.tipo === 'R')}  disabled={fdata.loading} xs={6} md={4} />
+                    <GridTextFiled id={'correo'}    label={(fdata.loading)?'Espera..':'Correo electrónico'}    actionOnBlur={()=>{setHabilitar( (validaCaptura(captura) === '')?(validaDatos(input) === '')?false:true:true)}}  value={input.correo} action={({target})=>{setInput({...input,correo:target.value})}}  variant={'standard'} focused={true} required={true} fullWidth={true} placeholder={'correo@mail.com'}  error={(fdata.snackbar.tipo === 'C')}  disabled={fdata.loading} xs={6} md={4} />
+                    <GirdSelect focused={true} fullWidth={true} inputLabel={(fdata.loading)?'Espera..':'Uso CFDI *'} id={'cfdi'} value={input.usoCFDI} action={(event)=>{setInput({...input,usoCFDI: event.target.value})}} items={fdata.usosCFDI} xs={6} md={4} />
+                </Grid>
+                <Grid container >
+                    <GridTextFiled id={'nomraz'}    label={(fdata.loading)?'Espera..':'Nombre/Razón Social'}    actionOnBlur={()=>{setHabilitar( (validaCaptura(captura) === '')?(validaDatos(input) === '')?false:true:true)}} value={input.razonSocial}    action={({target})=>{setInput({...input,razonSocial:target.value.toUpperCase()})}} variant={'standard'} focused={true} required={true} fullWidth={true}                                 error={(fdata.snackbar.tipo === 'S')}  disabled={fdata.loading}   xs={6} md={4} />
+                    <GridTextFiled id={'correo2'}   label={(fdata.loading)?'Espera..':'Correo electrónico 2'}                                                                                                                   value={input.correo2}        action={({target})=>{setInput({...input,correo2:target.value})}}     variant={'standard'} focused={true} required={false} fullWidth={true} placeholder={'correo@mail.com'}                                          disabled={fdata.loading}   xs={6} md={4} />
+                    <GirdSelect focused={true} fullWidth={true} inputLabel={(fdata.loading)?'Espera..':'Régimen Fiscal *'} id={'regfis'} value={input.regimenFiscal} action={(event)=>{setInput({...input,regimenFiscal: event.target.value})}} items={fdata.RegimenesFiscales} xs={6} md={4} />
+                </Grid>
+            </Grid>
             <Grid item xs={12} md={12} mt={4}>
                 <Grid container >
                     <GridText text={'Domicilio'} variant={'h6'} component={'h6'} aling='left' separation={1} xs={12} md={12}/>
-                </Grid>
+                </Grid>              
                 <Grid container >
                     <GridTextFiled id={'calle'}     label={(fdata.loading)?'Espera..':'Calle'}                 value={input.domicilio.calle}      action={({target})=>{setInput({...input,domicilio:{...input.domicilio,calle:target.value}})}}    variant={'standard'} focused={true} required={false} fullWidth={true} disabled={fdata.loading} xs={6} md={3} />
                     <GridTextFiled id={'numExt'}    label={(fdata.loading)?'Espera..':'Número Exterior'}       value={input.domicilio.numExt}     action={({target})=>{setInput({...input,domicilio:{...input.domicilio,numExt:target.value}})}}   variant={'standard'} focused={true} required={false} fullWidth={true} disabled={fdata.loading} xs={6} md={3} />
@@ -236,36 +237,25 @@ export default function GenerateInvoices(){
                 </Grid>
             </Grid>
             
-            <Stack sx={{ width: '100%' }} spacing={2}>
+            <GridText text={'Información de Tickets'} variant={'h6'} component={'h6'} aling='left' separation={3} xs={12} md={12} />
+            <Stack sx={{ width: '100%' }} >
                 <Alert severity="info" >
                     Paso 2: Ingresa la información de los tickets. 
                     Puedes agregar más de un ticket a una misma factura. Los tickets de una misma tienda se calculan en una sola factura. Consulta los campos aquí:
                     <IconButton aria-label="delete" onClick={()=>{setModal(true)}}>
                         <ContactSupportOutlinedIcon  onMouseEnter={(event) => {setAnchorEl(event.currentTarget);}} onMouseLeave={()=>{setAnchorEl(null);}}/>
-                    </IconButton>                
-                    <Popover id="mouse-over-popover" open={open} anchorEl={anchorEl} onClose={()=>{setAnchorEl(null);}} disableRestoreFocus
-                        sx={{
-                        pointerEvents: 'none',
-                        }}                    
-                        anchorOrigin={{
-                            vertical: 'bottom',
-                            horizontal: 'left',
-                        }}
-                        transformOrigin={{
-                            vertical: 'top',
-                            horizontal: 'left',
-                        }}>
-                        <Typography sx={{ p: 1 }}>Datos del ticket necesarios</Typography>
-                    </Popover>       
+                    </IconButton>      
                     <ModalTicket modal={modal} setModal={setModal}/>
                 </Alert>
-            </Stack>
+            </Stack>  
 
-            <GirdDatePicker label={'Fecha de compra'}  fecha={captura.fechaCompra} accion={(newValue) => setCaptura({...captura,fechaCompra: dayjs(new Date(newValue))?.format('YYYY-MM-DD')})} focused={true} xs={6}  md={4} />
+            <GridText text={''} variant={'h6'} component={'h6'} aling='left' separation={1} xs={12} md={12} />
+            <GridText text={''} variant={'h6'} component={'h6'} aling='left' separation={1} xs={12} md={12} />
+            <GirdDatePicker spacing={5} label={'Fecha de compra'}  fecha={captura.fechaCompra} accion={(newValue) => setCaptura({...captura,fechaCompra: dayjs(new Date(newValue))?.format('YYYY-MM-DD')})} focused={true} xs={6}  md={4} />
             <GridTextFiled id={'tienda'}        type={'number'} label={(fdata.loading)?'Espera..':'Sucursal'}          actionOnBlur={()=>{setHabilitar( (validaCaptura(captura) === '')?(validaDatos(input) === '')?false:true:true)}} value={captura.tienda}   action={({target})=>{setCaptura({...captura,tienda:dataInteger(target.value)})}}                                   variant={'standard'} focused={true} required={true} fullWidth={true} disabled={fdata.loading} placeholder={'999'}         error={(fdata.snackbar.tipo === 'TND')}                                 xs={6}  md={2} />
-            <GridTextFiled id={'caja'}                          label={(fdata.loading)?'Espera..':'No. de caja'}        actionOnBlur={()=>{setHabilitar( (validaCaptura(captura) === '')?(validaDatos(input) === '')?false:true:true)}} value={captura.caja}     action={({target})=>{(target.value === '' || re.test(target.value))&&setCaptura({...captura,caja:target.value})}}  variant={'standard'} focused={true} required={true} fullWidth={true} disabled={fdata.loading} placeholder={'09'}          error={(fdata.snackbar.tipo === 'CJA')} inputProps={{ maxLength: 2 }}   xs={6}  md={2} />
-            <GridTextFiled id={'numTicket'}     type={'number'} label={(fdata.loading)?'Espera..':'No. de ticket'}      actionOnBlur={()=>{setHabilitar( (validaCaptura(captura) === '')?(validaDatos(input) === '')?false:true:true)}} value={captura.ticket}   action={({target})=>{setCaptura({...captura,ticket:dataInteger(target.value)})}}                                   variant={'standard'} focused={true} required={true} fullWidth={true} disabled={fdata.loading} placeholder={'999'}         error={(fdata.snackbar.tipo === 'TKT')}                                 xs={6}  md={2} />
-            <GridTextFiled id={'importe'}       type={'number'} label={(fdata.loading)?'Espera..':'Importe compra'}    actionOnBlur={()=>{setHabilitar( (validaCaptura(captura) === '')?(validaDatos(input) === '')?false:true:true)}} value={captura.total}    action={({target})=>{setCaptura({...captura,total:formatImp(target.value)})}}                                      variant={'standard'} focused={true} required={true} fullWidth={true} disabled={fdata.loading} placeholder={'99,999.99'}   error={(fdata.snackbar.tipo === 'TTL')}                                 xs={12} md={2} />
+            <GridTextFiled id={'caja'}                          label={(fdata.loading)?'Espera..':'No. de caja'}        actionOnBlur={()=>{setHabilitar( (validaCaptura(captura) === '')?(validaDatos(input) === '')?false:true:true)}} value={captura.caja}     action={({target})=>{(target.value === '' || re.test(target.value))&&setCaptura({...captura,caja:target.value})}}  variant={'standard'} focused={true} required={true} fullWidth={true} disabled={fdata.loading} placeholder={'09'}          error={(fdata.snackbar.tipo === 'CJA')} inputProps={{ maxLength: 2 }}   xs={6}  md={2}/>
+            <GridTextFiled id={'numTicket'}     type={'number'} label={(fdata.loading)?'Espera..':'No. de ticket'}      actionOnBlur={()=>{setHabilitar( (validaCaptura(captura) === '')?(validaDatos(input) === '')?false:true:true)}} value={captura.ticket}   action={({target})=>{setCaptura({...captura,ticket:dataInteger(target.value)})}}                                   variant={'standard'} focused={true} required={true} fullWidth={true} disabled={fdata.loading} placeholder={'999'}         error={(fdata.snackbar.tipo === 'TKT')}                                 xs={6}  md={2}/>
+            <GridTextFiled id={'importe'}       type={'number'} label={(fdata.loading)?'Espera..':'Importe compra'}    actionOnBlur={()=>{setHabilitar( (validaCaptura(captura) === '')?(validaDatos(input) === '')?false:true:true)}} value={captura.total}    action={({target})=>{setCaptura({...captura,total:formatImp(target.value)})}}                                      variant={'standard'} focused={true} required={true} fullWidth={true} disabled={fdata.loading} placeholder={'99,999.99'}   error={(fdata.snackbar.tipo === 'TTL')}                                 xs={12} md={2}/>
             
             <Grid item xs={2} md={8} />
             <GridLoadingButton label={'Limpiar'} click={()=>{setTickets([])}} loading={fdata.loading} variant={'outlined'} icon={<DeleteOutlineOutlinedIcon />} color={'error'}     fullWidth={false} disabled={false}      xs={5} md={2}/>

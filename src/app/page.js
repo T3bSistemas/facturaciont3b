@@ -10,7 +10,6 @@ export default function Home() {
   return (  
     <Grid container>
       <Grid item xs={12} md={12} >
-        <Item>
           <Head>
             <title>Facturación T3B</title>
             <meta
@@ -25,7 +24,6 @@ export default function Home() {
             <link rel="icon" href="/img/favicon.ico" sizes="any" />
           </Head>  
           <FacUserProvider />
-        </Item>
       </Grid>
     </Grid>
   )

@@ -1,19 +1,19 @@
 'use client'
 import {useState}               from 'react'
+import Link                     from 'next/link'
 
 import { Grid, Typography,
         Snackbar, Alert,
-        useMediaQuery  }       from '@mui/material'
+        useMediaQuery}          from '@mui/material'
 
 import {img64}                  from '../../UtilFunction/Base64Img'
 import { useFContext, 
         useSetFContext  }       from "../../FacUserProvider";
 import Page                     from '../Page'
 import GridLoadingButton        from '../../fastComponents/Girds/GridLoadingButton'
-import GridText                 from '../../fastComponents/Girds/GridText'
 import GridImage                from '../../fastComponents/Girds/GridImage'
 import ModalTicket              from '../../fastComponents/ModalTicket';
-import Item from '../../fastComponents/Item'
+import Item                     from '../../fastComponents/Item'
 
 export default function Start(){
     const fdata                     = useFContext();
@@ -26,9 +26,9 @@ export default function Start(){
             {(page !== 'inicio')?
                 <Page page={page} setPage={setPage}/>
                 :
-                <Grid container spacing={2}>
-                    <GridImage src={img64('Logo3b')} width={350} height={100} widthMatches={1} heightMatches={1} alt={'Imagen Logo 3B'} xs={12} md={6} separation={8} />
-                    <GridImage infoAdd={<Typography variant='h6' textAlign='center' mt={1}><b>¿Qué datos necesito de mi ticket?</b></Typography>} src={img64('ticket')} width={50} height={50} widthMatches={50} heightMatches={50} alt={'Informacion Ticket'} xs={12} md={6} separation={3} click={()=>{setModal(true)}} link={'#'}/>
+                <Grid container>
+                    <GridImage src={img64('Logo3b')} width={370} height={120} widthMatches={1} heightMatches={1} alt={'Imagen Logo 3B'} xs={12} md={6} separation={8} />                    
+                    <Grid item xs={12} md={6}></Grid>
                     <Grid item xs={12} md={6}>
                         <Item>
                             <Typography variant={'h4'} component={'h1'} textAlign={'center'} mt={1} >
@@ -39,7 +39,8 @@ export default function Start(){
                             </Typography>
                         </Item>
                     </Grid>
-                    <Grid item xs={0} md={6} />
+                    <GridImage infoAdd={<Typography variant='h6' textAlign='center' mt={1} onClick={()=>{setModal(true)}}><b style={ {color: 'red'}}>¿Qué datos necesito de mi ticket?</b></Typography>} src={img64('ticket')} width={50} height={50} widthMatches={50} heightMatches={50} alt={'Informacion Ticket'} xs={12} md={6} separation={0} click={()=>{setModal(true)}} link={'#'}/>
+                    
                     <ModalTicket modal={modal} setModal={setModal}/> 
 
                     <Grid item xs={12} md={6} mt={5}>                        
@@ -69,18 +70,19 @@ export default function Start(){
                                 </Item>
                             </Grid>
                             <Grid item xs={1} md={2}></Grid>
+
                             <Grid item xs={1} md={2}></Grid>
                             <Grid item xs={10} md={8}>
                                 <Item>
                                     <Typography variant={'h6'} component={'h6'} textAlign={'center'} mt={1} >
-                                        <b>Quizá ya tenemos una respuesta para ti, visita nuestra sección de <b style={ {color: 'red'} }>Preguntas frecuentes</b>.</b>
+                                        <b>Quizá ya tenemos una respuesta para ti, visita nuestra sección de <Link href={'#'} style={{textDecoration: 'none'}} onClick={()=>{setPage('PF')}}><b style={ {color: 'red'} }>Preguntas frecuentes</b></Link>.</b>
                                     </Typography>
                                 </Item>
                             </Grid>
                             <Grid item xs={1} md={2}></Grid>
                         </Grid>
                     </Grid>
-                    <GridImage src={img64('pintV')} width={450} height={450} widthMatches={1} heightMatches={1} alt={'Imagen Principal'} xs={12} md={6} separation={3} />
+                    <GridImage src={img64('pintV')} width={450} height={450} widthMatches={1} heightMatches={1} alt={'Imagen Principal'} xs={12} md={6} separation={0} />
                 </Grid>
             }
             <Snackbar
