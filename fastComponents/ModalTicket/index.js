@@ -1,5 +1,5 @@
 import Image                                        from 'next/image'
-import { Grid, Typography, Modal}                   from '@mui/material';
+import { Grid, Typography, Modal,useMediaQuery}     from '@mui/material';
 import Item                                         from '../Item'
 import Sheet                                        from '@mui/joy/Sheet';
 import ModalClose                                   from '@mui/joy/ModalClose';
@@ -7,6 +7,7 @@ import ModalClose                                   from '@mui/joy/ModalClose';
 import {img64}                                      from '../../UtilFunction/Base64Img'
 
 export default function ModalTicket({modal, setModal}){
+    const matches                   = useMediaQuery('(min-width:600px)');
     return (
         <Modal
             aria-labelledby="modal-title"
@@ -18,7 +19,7 @@ export default function ModalTicket({modal, setModal}){
             <Sheet
             variant="outlined"
             sx={{
-                maxWidth: 1200,
+                maxWidth: (matches)?1300:500,
                 borderRadius: 'lg',
                 p: 1,
                 boxShadow: 'lg',
@@ -35,15 +36,15 @@ export default function ModalTicket({modal, setModal}){
                         <b>¿Cómo obtener mi factura?</b>
                     </Typography>               
                     <Typography  variant="h6" component="h6">
-                        Para poder facturar deberás contar con tu ticket de compra e identificar 4 datos importantes para poder realizar la búsqueda de la compra y poder generar la factura
+                        Deberás contar con tu ticket de compra e identificar los 5 datos importantes para realizar la búsqueda de tu compra y generar la factura.
                     </Typography>
                 </Grid>
                 <Grid item xs={12} md={6}>
                     <Item>
                         <Image
                         src={img64('dataTicket')}
-                        width={400}
-                        height={400}
+                        width={(matches)?715:300}
+                        height={(matches)?579:400}
                         alt="Picture of the author"
                         />
                     </Item>
