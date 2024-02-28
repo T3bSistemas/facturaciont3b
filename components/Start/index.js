@@ -63,8 +63,8 @@ export default function Start(){
                                 <Item>
                                     <>
                                     <Typography variant={'h6'} component={'h6'} textAlign={'center'} mt={1} >
-                                        <b>Si tuviste algún problema en el proceso de facturación, comunícate con nosotros al correo electrónico:
-                                        <b style={ {color: '#d32f2f'} }>facturamicompra@t3b.com.mx</b></b> 
+                                        Si tuviste algún problema en el proceso de facturación, comunícate con nosotros al correo electrónico:
+                                        <b style={ {color: '#d32f2f'} }>facturamicompra@t3b.com.mx</b>
                                     </Typography>
                                     </>
                                 </Item>
@@ -75,7 +75,7 @@ export default function Start(){
                             <Grid item xs={10} md={8}>
                                 <Item>
                                     <Typography variant={'h6'} component={'h6'} textAlign={'center'} mt={1} >
-                                        <b>Quizá ya tenemos una respuesta para ti, visita nuestra sección de <Link href={'#'} style={{textDecoration: 'none'}} onClick={()=>{setPage('PF')}}><b style={ {color: '#d32f2f'} }>Preguntas frecuentes</b></Link>.</b>
+                                        Quizá ya tenemos una respuesta para ti, visita nuestra sección de <Link href={'#'} style={{textDecoration: 'none'}} onClick={()=>{setPage('PF')}}><b style={ {color: '#d32f2f'} }>Preguntas frecuentes</b></Link>.
                                     </Typography>
                                 </Item>
                             </Grid>

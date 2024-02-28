@@ -35,6 +35,7 @@ export default function datePicker({label, fecha, accion}){
                          borderBottom: '1.5px solid #141414',
                      },                
                  }}
+                 fullWidth={true}
             />
         </LocalizationProvider>
     )
