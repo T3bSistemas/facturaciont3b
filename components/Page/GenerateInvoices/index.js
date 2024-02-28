@@ -235,9 +235,6 @@ export default function GenerateInvoices(){
                     <GridTextFiled id={'cp'}        label={(fdata.loading)?'Espera..':'Código Postal'}         actionOnBlur={()=>{setHabilitar( (validaCaptura(captura) === '')?(validaDatos(input) === '')?false:true:true)}}  value={input.domicilio.cp}          action={({target})=>{(target.value === '' || re.test(target.value))&&setInput({...input,domicilio:{...input.domicilio,cp:target.value}})}}      variant={'standard'} focused={true} required={true}  fullWidth={true} disabled={fdata.loading} error={(fdata.snackbar.tipo === 'P')}  inputProps={{ maxLength: 5 }}   xs={6} md={3} />
                 </Grid>
             </Grid>
-
-            <GridText text={'- Puede agregar todos sus tickets y facturarlos en un solo proceso.'}  variant={'h6'} component={'h6'} aling='center' separation={0} xs={12}  md={12}/>
-            <GridText text={'- Los tickets de una misma tienda se calculan en una sola factura.'}   variant={'h6'} component={'h6'} aling='center' separation={0}  xs={12} md={12}/>
             
             <Stack sx={{ width: '100%' }} spacing={2}>
                 <Alert severity="info" >
