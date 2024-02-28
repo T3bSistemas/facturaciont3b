@@ -196,13 +196,13 @@ export default function GenerateInvoices(){
     return( 
         <Grid container >
             <GridText text={'BIENVENIDO A NUESTRO SISTEMA DE FACTURACIÓN'}                                                                             variant={'h5'} component={'h1'} aling='center' separation={2} xs={12} md={12}/>
-            <GridText text={'Recuerda que el periodo de vigencia en la facturación no debe ser mayor a 30 días naturales en que se efectuó su compra'} variant={'h6'} component={'h6'} aling='center' separation={0} xs={12} md={12}/>
+            <GridText text={'Recuerda que el periodo de vigencia en la facturación no debe ser mayor a 30 días naturales en que se efectuó su compra'} variant={'h8'} component={'h8'} aling='center' separation={0} xs={12} md={12}/>
             <Stack sx={{ width: '100%' }} spacing={2}>
                <Alert severity="info" >
                  Paso 1: Ingresa tus datos fiscales.
                 Si has facturado anteriormente con nosotros, al ingresar tu RFC podemos recuperar tu información, corrobora que ésta sea correcta.
+                Los campos marcados con * son obligatorios.
                </Alert>
-               <Alert severity="warning" >Los campos marcados con * son obligatorios.</Alert>
             </Stack>
             <Grid item xs={12} md={12} mt={4}>
                 <Grid container >
@@ -237,7 +237,7 @@ export default function GenerateInvoices(){
                 </Grid>
             </Grid>
             
-            <GridText text={'Información de Tickets'} variant={'h6'} component={'h6'} aling='left' separation={3} xs={12} md={12} />
+            <GridText text={''} variant={'h6'} component={'h6'} aling='left' separation={3} xs={12} md={12} />
             <Stack sx={{ width: '100%' }} >
                 <Alert severity="info" >
                     Paso 2: Ingresa la información de los tickets. 
@@ -249,7 +249,7 @@ export default function GenerateInvoices(){
                 </Alert>
             </Stack>  
 
-            <GridText text={''} variant={'h6'} component={'h6'} aling='left' separation={1} xs={12} md={12} />
+            <GridText text={'Información de Tickets'} variant={'h6'} component={'h6'} aling='left' separation={1} xs={12} md={12} />
             <GridText text={''} variant={'h6'} component={'h6'} aling='left' separation={1} xs={12} md={12} />
             <GirdDatePicker spacing={5} label={'Fecha de compra'}  fecha={captura.fechaCompra} accion={(newValue) => setCaptura({...captura,fechaCompra: dayjs(new Date(newValue))?.format('YYYY-MM-DD')})} focused={true} xs={6}  md={4} />
             <GridTextFiled id={'tienda'}        type={'number'} label={(fdata.loading)?'Espera..':'Sucursal'}          actionOnBlur={()=>{setHabilitar( (validaCaptura(captura) === '')?(validaDatos(input) === '')?false:true:true)}} value={captura.tienda}   action={({target})=>{setCaptura({...captura,tienda:dataInteger(target.value)})}}                                   variant={'standard'} focused={true} required={true} fullWidth={true} disabled={fdata.loading} placeholder={'999'}         error={(fdata.snackbar.tipo === 'TND')}                                 xs={6}  md={2} />

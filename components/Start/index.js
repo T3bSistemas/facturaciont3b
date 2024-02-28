@@ -27,7 +27,7 @@ export default function Start(){
                 <Page page={page} setPage={setPage}/>
                 :
                 <Grid container>
-                    <GridImage src={img64('Logo3b')} width={370} height={120} widthMatches={1} heightMatches={1} alt={'Imagen Logo 3B'} xs={12} md={6} separation={8} />                    
+                    <GridImage src={img64('Logo3b')} width={322} height={86.9} widthMatches={1} heightMatches={1} alt={'Imagen Logo 3B'} xs={12} md={6} separation={8} />                    
                     <Grid item xs={12} md={6}></Grid>
                     <Grid item xs={12} md={6}>
                         <Item>
@@ -39,7 +39,7 @@ export default function Start(){
                             </Typography>
                         </Item>
                     </Grid>
-                    <GridImage infoAdd={<Typography variant='h6' textAlign='center' mt={1} onClick={()=>{setModal(true)}}><b style={ {color: 'red'}}>¿Qué datos necesito de mi ticket?</b></Typography>} src={img64('ticket')} width={50} height={50} widthMatches={50} heightMatches={50} alt={'Informacion Ticket'} xs={12} md={6} separation={0} click={()=>{setModal(true)}} link={'#'}/>
+                    <GridImage infoAdd={<Typography variant='h6' textAlign='center' mt={1} onClick={()=>{setModal(true)}}><b style={ {color: '#d32f2f'}}>¿Qué datos necesito de mi ticket?</b></Typography>} src={img64('ticket')} width={50} height={50} widthMatches={50} heightMatches={50} alt={'Informacion Ticket'} xs={12} md={6} separation={0} click={()=>{setModal(true)}} link={'#'}/>
                     
                     <ModalTicket modal={modal} setModal={setModal}/> 
 
@@ -64,7 +64,7 @@ export default function Start(){
                                     <>
                                     <Typography variant={'h6'} component={'h6'} textAlign={'center'} mt={1} >
                                         <b>Si tuviste algún problema en el proceso de facturación, comunícate con nosotros al correo electrónico:
-                                        <b style={ {color: 'red'} }>facturamicompra@t3b.com.mx</b></b> 
+                                        <b style={ {color: '#d32f2f'} }>facturamicompra@t3b.com.mx</b></b> 
                                     </Typography>
                                     </>
                                 </Item>
@@ -75,7 +75,7 @@ export default function Start(){
                             <Grid item xs={10} md={8}>
                                 <Item>
                                     <Typography variant={'h6'} component={'h6'} textAlign={'center'} mt={1} >
-                                        <b>Quizá ya tenemos una respuesta para ti, visita nuestra sección de <Link href={'#'} style={{textDecoration: 'none'}} onClick={()=>{setPage('PF')}}><b style={ {color: 'red'} }>Preguntas frecuentes</b></Link>.</b>
+                                        <b>Quizá ya tenemos una respuesta para ti, visita nuestra sección de <Link href={'#'} style={{textDecoration: 'none'}} onClick={()=>{setPage('PF')}}><b style={ {color: '#d32f2f'} }>Preguntas frecuentes</b></Link>.</b>
                                     </Typography>
                                 </Item>
                             </Grid>
