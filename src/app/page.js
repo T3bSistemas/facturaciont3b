@@ -1,6 +1,6 @@
 'use client'
 import React from 'react'
-import { randomBytes } from 'crypto'
+
 import  Head from 'next/head'
 import {Grid, Container} from '@mui/material';
 import  FacUserProvider  from '../../FacUserProvider'
@@ -23,7 +23,7 @@ export default function Home() {
             />
             <link rel="icon" href="/img/favicon.ico" sizes="any" />
           </Head>  
-          <FacUserProvider />
+          <FacUserProvider /> 
       </Grid>
     </Grid>
   )
