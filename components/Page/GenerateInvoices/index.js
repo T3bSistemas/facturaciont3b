@@ -199,9 +199,9 @@ export default function GenerateInvoices(){
             <GridText text={'Recuerda que el periodo de vigencia en la facturación no debe ser mayor a 30 días naturales en que se efectuó tu compra'} variant={'h8'} component={'h8'} aling='center' separation={0} xs={12} md={12}/>
             <Stack sx={{ width: '100%' }} spacing={2}>
                <Alert severity="info" >
-                 Paso 1: Ingresa tus datos fiscales.
-                Si has facturado anteriormente con nosotros, al ingresar tu RFC podemos recuperar tu información, corrobora que ésta sea correcta.
-                Los campos marcados con * son obligatorios.
+                 Paso 1: Ingresa tus datos fiscales.<br></br>
+                 Si has facturado anteriormente con nosotros, al ingresar tu RFC podemos recuperar tu información, corrobora que ésta sea correcta.<br></br>
+                 Los campos marcados con * son obligatorios.
                </Alert>
             </Stack>
             <Grid item xs={12} md={12} mt={4}>
@@ -240,7 +240,7 @@ export default function GenerateInvoices(){
             <GridText text={''} variant={'h6'} component={'h6'} aling='left' separation={3} xs={12} md={12} />
             <Stack sx={{ width: '100%' }} >
                 <Alert severity="info" >
-                    Paso 2: Ingresa la información de los tickets. 
+                    Paso 2: Ingresa la información de los tickets. <br></br>
                     Puedes agregar más de un ticket a una misma factura. Los tickets de una misma tienda se calculan en una sola factura. Consulta los campos aquí:
                     <IconButton aria-label="delete" onClick={()=>{setModal(true)}}>
                         <ContactSupportOutlinedIcon  onMouseEnter={(event) => {setAnchorEl(event.currentTarget);}} onMouseLeave={()=>{setAnchorEl(null);}}/>

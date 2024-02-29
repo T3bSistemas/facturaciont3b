@@ -11,13 +11,11 @@ useMediaQuery}     from '@mui/material';
 import ArrowBackIosNewOutlinedIcon  from '@mui/icons-material/ArrowBackIosNewOutlined';
 import HelpIcon                     from '@mui/icons-material/Help';
 
-import Logo                         from '../../../public/Logo.png'
-
 import GridLoadingButton            from '../../../fastComponents/Girds/GridLoadingButton';
-import GridImage                    from '../../../fastComponents/Girds/GridImage';
 import ReprintInvoice               from '../ReprintInvoice'
 import GenerateInvoices             from '../GenerateInvoices'
 import FrequentQuestions            from '../FrequentQuestions'
+import Aviso                        from '../Aviso/aviso';
 
 function HideOnScroll(props) {
   const { children, window } = props;
@@ -63,8 +61,11 @@ export default function Leyout({props, page, setPage}) {
                 (page === 'RF')?
                     <ReprintInvoice />
                     :
-                    (page === 'PF')&&
+                    (page === 'PF')?
                         <FrequentQuestions/>
+                        :
+                        (page === 'AV')&&
+                          <Aviso/>
             }
       </Container>
     </Fragment>

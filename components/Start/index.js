@@ -15,6 +15,7 @@ import GridImage                from '../../fastComponents/Girds/GridImage'
 import ModalTicket              from '../../fastComponents/ModalTicket';
 import Item                     from '../../fastComponents/Item'
 
+
 export default function Start(){
     const fdata                     = useFContext();
     const setFdata                  = useSetFContext();
@@ -85,6 +86,19 @@ export default function Start(){
                     <GridImage src={img64('pintV')} width={450} height={450} widthMatches={1} heightMatches={1} alt={'Imagen Principal'} xs={12} md={6} separation={0} />
                 </Grid>
             }
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <Grid container sx={{position: 'fixed',bottom: 0,left: 0}} >
+                <Grid item xs={0} md={2}/>
+                <Grid item xs={0} md={8} textAlign={'center'}>
+                    <Typography variant={'h9'} component={'h9'} textAlign={'center'}  >
+                        <b>Todos los derechos reservados Tiendas 3B |  <Link href={'#'} style={{textDecoration: 'none'}} onClick={()=>{setPage('AV')}}><b style={ {color: '#d32f2f'} }>Aviso de Privacidad</b></Link></b>
+                    </Typography>                     
+                </Grid>
+                <Grid item xs={0} md={2}/>
+            </Grid>
             <Snackbar
                 anchorOrigin={ fdata.snackbar.anchorOrigin }
                 open={fdata.snackbar.open}
