@@ -1,6 +1,10 @@
 'use client'
-import { createContext, useContext, useState } from 'react';
-import Start from '../components/Start'
+import {useEffect}                              from 'react'
+import axios                                    from 'axios';
+import { createContext, useContext, useState }  from 'react';
+import Start                                    from '../components/Start'
+
+
 
 const FacContext = createContext();
 const SetFacContext = createContext();
@@ -13,7 +17,7 @@ export function useSetFContext() {
   return useContext(SetFacContext);
 }
 
-const questions =[
+/*const questions =[ 
   {
     id: 1,
     question: '¿Cuánto tiempo tengo para facturar?',
@@ -48,8 +52,8 @@ const questions =[
     id: 7,
     question: '¿Qué debo usar en la opción Uso de CFDI?',
     details: 'Esta opción es para que el contribuyente defina el uso de esta factura o bajo que concepto va a comprobar el egreso'
-  }
-]
+  } 
+]*/
 
 const header ={
   headers: {
@@ -71,79 +75,6 @@ const snackbar = {
     severity:'info'
 }
 
-const usosCFDI= [
-  {
-      value:'G01',
-      item:'ADQUISICIÓN DE MERCANCIAS'
-  },
-  {
-      value:'G02',
-      item:'DEVOLUCIONES, DESCUENTOS O BONIFICACIONES'
-  },
-  {
-      value:'G03',
-      item:'GASTOS EN GENERAL'
-  },
-  {
-      value:'S01',
-      item:'SIN EFECTOS FISCALES'
-  }
-]
-
-const RegimenesFiscales= [
-  {
-      value:'601',
-      item:'GENERAL DE LEY PERSONAS MORALES'
-  },
-  {
-      value:'603',
-      item:'PERSONAS MORALES CON FINES NO LUCRATIVOS'
-  },
-  {
-      value:'605',
-      item:'SUELDOS Y SALARIOS E INGRESOS ASIMILADOS A SALARIOS'
-  },
-  {
-      value:'606',
-      item:'ARRENDAMIENTO'
-  },
-  {
-      value:'611',
-      item:'INGRESOS POR DIVIDENDOS (SOCIOS Y ACCIONISTAS)'
-  },
-  {
-      value:'612',
-      item:'PERSONAS FÍSICAS CON ACTIVIDADES EMPRESARIALES Y PROFESIONALES'
-  },
-  {
-      value:'620',
-      item:'SOCIEDADES COOPERATIVAS DE PRODUCCIÓN QUE OPTAN POR DIFERIR SUS INGRESOS'
-  },
-  {
-      value:'621',
-      item:'INCORPORACIÓN FISCAL'
-  },
-  {
-      value:'622',
-      item:'ACTIVIDADES AGRÍCOLAS, GANADERAS, SILVÍCOLAS Y PESQUERAS'
-  },
-  {
-      value:'623',
-      item:'OPCIONAL PARA GRUPOS DE SOCIEDADES'
-  },
-  {
-      value:'624',
-      item:'COORDINADOS'
-  },
-  {
-      value:'625',
-      item:'RÉGIMEN DE LAS ACTIVIDADES EMPRESARIALES CON INGRESOS A TRAVÉS DE PLATAFORMAS TECNOLÓGICAS'
-  },
-  {
-      value:'626',
-      item:'RÉGIMEN SIMPLIFICADO DE CONFIANZA'
-  }
-]
 
 const columsFactura=[
   {value: 'Fecha de Compra'},
@@ -159,18 +90,32 @@ export default function FacUserProvider() {
   const [fdata, setFdata]   = useState(
     {
       loading:false,
-      usosCFDI:usosCFDI,
-      RegimenesFiscales:RegimenesFiscales,
+      usosCFDI:[],
+      RegimenesFiscales:[],
       columsFactura:columsFactura,
-      questions:questions,
+      questions:[],
       header:header,
       snackbar:snackbar
     })
   
+    useEffect(()=>{
+      async function catalogos(){
+        await axios.post(process.env.NEXT_PUBLIC_API_DASH+'/t3b-fact-das/catalogos',{} ,header)
+        .then(function (response) {
+          setFdata({...fdata, questions:response.data.questions, usosCFDI:response.data.usoscfdi, RegimenesFiscales:response.data.regimenesfiscales} )
+        })
+      }
+
+      if(fdata.usosCFDI.length === 0 || fdata.RegimenesFiscales.length === 0 || fdata.questions.length === 0){
+        catalogos() 
+      }
+    })
   return (
     <FacContext.Provider value={fdata}>
       <SetFacContext.Provider value={setFdata}>
-        <Start />
+        {(fdata.usosCFDI.length > 0 || fdata.RegimenesFiscales.length > 0 || fdata.questions.length > 0)&&
+          <Start />
+        }        
       </SetFacContext.Provider>      
     </FacContext.Provider>
   )

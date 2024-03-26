@@ -4,8 +4,10 @@ export  function setSnackbar(fdata, tipo){
     /**************************************Genericos************************************************** */
     if(tipo === 'SNR'){
         return {...fdata.snackbar,tipo:tipo, open:true, severity:'warning', message: 'Sin resultados en la búsqueda '}
+    } else if(tipo.includes('400-')){
+        return {...fdata.snackbar,tipo:tipo, open:true, severity:'error',   message: tipo.replace('400-','')}
     } else if(tipo === 'SEP'){
-        return {...fdata.snackbar,tipo:tipo, open:true, severity:'error',   message: 'El sistema está experimentado problemas para recuperar su factura, inténtelo más tarde o póngase en contacto con nosotros en facturamicompra@t3b.com.mx'}
+        return {...fdata.snackbar,tipo:tipo, open:true, severity:'error',   message: 'El sistema está experimentado problemas para recuperar su factura, inténtelo más tarde'}
     } else if(tipo === 'RFCR'){
         return {...fdata.snackbar,tipo:tipo, open:true, severity:'info',    message: 'Datos de RFC recuperado de facturas anteriores'}
     }else if(tipo === 'TK50'){
@@ -13,9 +15,9 @@ export  function setSnackbar(fdata, tipo){
     }else if(tipo === 'TKV'){
         return {...fdata.snackbar,tipo:tipo, open:true, severity:'warning', message: 'La lista de tickets a facturar esta vacia'}
     }else if(tipo === 'ERRGEN'){
-        return {...fdata.snackbar,tipo:tipo, open:true, severity:'error', message: 'Por el momento el sistema experimenta problemas de comunicación con nuestra base de datos, por favor inténtelo más tarde o pongase en contacto con nosotros en facturamicompra@t3b.com.mx, adjuntando sus datos fiscales y copia de su ticket de compra'}
+        return {...fdata.snackbar,tipo:tipo, open:true, severity:'error', message: 'Por el momento el sistema experimenta problemas de comunicación con nuestra base de datos, por favor inténtelo más tarde '}
     }else if(tipo === 'NDET'){
-        return {...fdata.snackbar,tipo:tipo, open:true, severity:'error', message: 'Por el momento el sistema experimenta problemas para obtener el detalle del ticket, por favor inténtelo más tarde o pongase en contacto con nosotros en facturamicompra@t3b.com.mx, adjuntando sus datos fiscales y copia de su ticket de compra'}
+        return {...fdata.snackbar,tipo:tipo, open:true, severity:'error', message: 'Por el momento el sistema experimenta problemas para obtener el detalle del ticket, por favor inténtelo más tarde'}
     }
     /**************************************Genericos************************************************** */
    
@@ -29,7 +31,7 @@ export  function setSnackbar(fdata, tipo){
     } else if(tipo === 'REG'){
         return {...fdata.snackbar,tipo:tipo, open:true, severity:'error',   message: 'No se encontro una Region para la tienda solicitada'}
     } else if(tipo === 'SEC'){
-        return {...fdata.snackbar,tipo:tipo, open:true, severity:'error',   message: 'El sistema está experimentado problemas para enviar su factura, inténtelo más tarde o póngase en contacto con nosotros en facturamicompra@t3b.com.mx'}
+        return {...fdata.snackbar,tipo:tipo, open:true, severity:'error',   message: 'El sistema está experimentado problemas para enviar su factura, inténtelo más tarde'}
     } else if(tipo === 'RTO'){
         return {...fdata.snackbar,tipo:tipo, open:true, severity:'error',   message: 'Ingresa o Verifica el correo'}
     } else if(tipo === 'UUID'){
@@ -71,12 +73,12 @@ export  function setSnackbar(fdata, tipo){
     /******************************************catch Axios********************************************************/
     //AL BUSCAR RFC EN bd
     else if(tipo === 'RFCE'){
-        return {...fdata.snackbar,tipo:tipo, open:true, severity:'error',   message: 'El sistema está experimentando problemas para recuperar tu RFC, inténtalo más tarde o pónte en contacto con nosotros en facturamicompra@t3b.com.mx'}
+        return {...fdata.snackbar,tipo:tipo, open:true, severity:'error',   message: 'El sistema está experimentando problemas para recuperar tu RFC, inténtalo más tarde '}
     }  
     // AL DE AGREGAR TICKET
     else if(tipo.includes('ERRAGREGAR-')){
-        //return {...fdata.snackbar,tipo:tipo, open:true, severity:'error',   message: 'Error al validar Ticket('+tipo.replace('ERRAGREGAR-','')+'), inténtelo más tarde o póngase en contacto con nosotros en facturamicompra@t3b.com.mx '}
-        return {...fdata.snackbar,tipo:tipo, open:true, severity:'error',   message: 'Error al validar Ticket, inténtelo más tarde o póngase en contacto con nosotros en facturamicompra@t3b.com.mx '}
+        return {...fdata.snackbar,tipo:tipo, open:true, severity:'error',   message: 'Error al validar Ticket('+tipo.replace('ERRAGREGAR-','')+'), inténtelo más tarde '}
+        //return {...fdata.snackbar,tipo:tipo, open:true, severity:'error',   message: 'Error al validar Ticket, inténtelo más tarde o póngase en contacto con nosotros en facturamicompra@t3b.com.mx '}
     } 
     /******************************************catch Axios********************************************************/
     /**********************************************VALIDACIONES AGREGAR TICKET***************************************** */

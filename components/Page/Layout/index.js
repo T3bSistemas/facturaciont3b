@@ -44,11 +44,11 @@ export default function Leyout({props, page, setPage}) {
         <AppBar style={{background : '#EBEAEA'}}>
           <Toolbar>
             <Grid container spacing={1}>
-              <Grid item xs={0} md={1}></Grid>
-                <GridLoadingButton label={<b>Inicio</b>}                             click={()=>{setPage('inicio')}} loading={(page === 'inicio')}    variant={'outlined'} icon={<ArrowBackIosNewOutlinedIcon />} color={'error'} fullWidth={true} size={(matches)?'large':'large'} xs={2} md={2}/>
-                <Grid item xs={6} md={5}></Grid>
-                <GridLoadingButton label={<b>Preguntas Frecuentes <HelpIcon /></b>}  click={()=>{setPage('PF')}}     loading={(page === 'contained')} variant={'outlined'}                                        color={'error'} fullWidth={true} size={(matches)?'large':'large'} xs={3} md={3}/>
-              <Grid item xs={0} md={1}></Grid>
+              <Grid item xs={0} md={1} />
+              <GridLoadingButton label={<b>Inicio</b>}                             click={()=>{setPage('inicio')}} loading={(page === 'inicio')}    variant={'outlined'} icon={<ArrowBackIosNewOutlinedIcon />} color={'error'} fullWidth={true} size={(matches)?'large':'large'} xs={5} md={2}/>
+              <Grid item xs={1} md={5}/>
+              <GridLoadingButton label={(matches)?<b>Preguntas Frecuentes <HelpIcon /></b>:<HelpIcon />}  click={()=>{setPage('PF')}}     loading={(page === 'contained')} variant={'outlined'}                                        color={'error'} fullWidth={true} size={(matches)?'large':'large'} xs={5} md={3}/>
+              <Grid item xs={1} md={1}/>
             </Grid>
           </Toolbar>
         </AppBar>

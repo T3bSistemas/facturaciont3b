@@ -49,7 +49,9 @@ export function formatImp(data){
                             const dosDecimales = decimal.substring(0,2);
                             return parseFloat(entero+'.'+dosDecimales.trim()).toFixed(2)
                         }else{
-                            if(decimal.length === 1){
+                            if(decimal.length === 0){
+                                return data.trim()
+                            }else if(decimal.length === 1){
                                 return parseFloat(data.trim()).toFixed(1)
                             }else{
                                 return parseFloat(data.trim()).toFixed(2)
