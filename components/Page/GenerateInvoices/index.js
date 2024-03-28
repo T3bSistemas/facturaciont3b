@@ -76,15 +76,22 @@ export default function GenerateInvoices(){
                         //await axios.post(process.env.NEXT_PUBLIC_API_TICK+'/t3b-fact-ticket/agregarTicket',captura ,fdata.header)
                         await axios.post(process.env.NEXT_PUBLIC_API_DASH+'/t3b-fact-das/agregarTicket',captura ,fdata.header)
                         .then(function (response) {
+                            console.log("Entro-----")
                             if(response.data !== null && response.data !== ''){
+                                console.log("Entro 1-----")
                                 if(response.data.folio != null && response.data.folio != ''){
+                                    console.log("Entro 2-----")
                                     if(response.data.folio.includes('F:')){
+                                        console.log("Entro 3-----")
                                         setFdata({...fdata, loading:false, snackbar: setSnackbar(fdata,'EXIT')})
                                     }else if(response.data.folio.includes('S:')){
+                                        console.log("Entro 4-----")
                                         setFdata({...fdata, loading:false, snackbar: setSnackbar(fdata,'PRO')})
                                     }else if(response.data.folio.includes('VS:')){
+                                        console.log("Entro 5-----")
                                         setFdata({...fdata, loading:false, snackbar: setSnackbar(fdata,'ERRAGREGAR-(VLF)')})
                                     }else{
+                                        console.log("Entro 6-----")
                                         setFdata({...fdata, loading:false, snackbar: setSnackbar(fdata,'ERRAGREGAR-(VLF)')})
                                     }
                                 }else{
@@ -93,32 +100,41 @@ export default function GenerateInvoices(){
                                     (response.data.region !== null && response.data.region != '') &&
                                     (parseFloat(response.data.total).toFixed(2) === parseFloat(captura.total).toFixed(2))
                                     ){
+                                        console.log("Entro 7-----")
                                         if(response.data.total.tipoPago !== '2' && response.data.total.tipoPago !== '3' && response.data.total.tipoPago !== '7'){
-                                            
+                                            console.log("Entro 8-----")
                                             if(response.data.detalles.length  > 0){
+                                                console.log("Entro 9-----")
                                                 const TotalPS = response.data.detalles.filter(t => t.atmdesc === 'PS').reduce((acc, v) => acc += v.atmventa, 0);
-                                                if(TotalPS > 0){                                                   
+                                                if(TotalPS > 0){    
+                                                    console.log("Entro 10-----")                                               
                                                     if(parseFloat(TotalPS).toFixed(2) === parseFloat(captura.total).toFixed(2)){
+                                                        console.log("Entro 11-----")  
                                                         setFdata({...fdata,loading:false,  snackbar: setSnackbar(fdata,'NPS')}) 
                                                     }else{
+                                                        console.log("Entro 12-----")  
                                                         setCaptura({...captura, tienda: 0, caja: '01', ticket: 0, total: 0.00, region: 0, conexion:{tclave: '',host: '', puerto: '', servicio: '', base: '', driver: '', url: ''}})
                                                         setTickets([...tickets,{fechaCompra: captura.fechaCompra, tienda: captura.tienda, caja: captura.caja, ticket: captura.ticket, total: parseFloat(parseFloat(captura.total)-parseFloat(TotalPS)).toFixed(2), accion: 'delete', region: response.data.region, conexion: response.data.conexion, tipoPago: response.data.tipoPago, detalles:response.data.detalles}])
                                                         setFdata({...fdata,loading:false,  snackbar: setSnackbar(fdata,'TKAPS')}) 
                                                         setHabilitar(false) 
                                                     }                                                    
                                                 }else{
+                                                    console.log("Entro 13-----") 
                                                     setCaptura({...captura, tienda: 0, caja: '01', ticket: 0, total: 0.00, region: 0, conexion:{tclave: '',host: '', puerto: '', servicio: '', base: '', driver: '', url: ''}})
                                                     setTickets([...tickets,{fechaCompra: captura.fechaCompra, tienda: captura.tienda, caja: captura.caja, ticket: captura.ticket, total: captura.total, accion: 'delete', region: response.data.region, conexion: response.data.conexion, tipoPago: response.data.tipoPago, detalles:response.data.detalles}])
                                                     setFdata({...fdata,loading:false,  snackbar: setSnackbar(fdata,'TKA')}) 
                                                     setHabilitar(false) 
                                                 }                                
                                             }else{
+                                                console.log("Entro 14-----")
                                                 setFdata({...fdata,loading:false,  snackbar: setSnackbar(fdata,'NDET')}) 
                                             }                                    
                                         }else{
+                                            console.log("Entro 15-----")
                                             setFdata({...fdata, loading:false, snackbar: setSnackbar(fdata,'TKP')})
                                         }
                                     }else{
+                                        console.log("Entro 16-----")
                                         setFdata({...fdata, loading:false, snackbar: setSnackbar(fdata,'TKN')})
                                     }                                    
                                 }                                                               
