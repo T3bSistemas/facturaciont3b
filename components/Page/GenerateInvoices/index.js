@@ -134,7 +134,7 @@ export default function GenerateInvoices(){
                                             setFdata({...fdata, loading:false, snackbar: setSnackbar(fdata,'TKP')})
                                         }
                                     }else{
-                                        console.log("Entro 16-----")
+                                        console.log('Entro 16----- '+response.data.tipoPago+' '+response.data.region+' '+parseFloat(response.data.total).toFixed(2)+' '+parseFloat(captura.total).toFixed(2) )
                                         setFdata({...fdata, loading:false, snackbar: setSnackbar(fdata,'TKN')})
                                     }                                    
                                 }                                                               
