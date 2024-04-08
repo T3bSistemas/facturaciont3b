@@ -2,6 +2,7 @@
 import React from 'react'
 
 import  Head from 'next/head'
+
 import {Grid, Container} from '@mui/material';
 import  FacUserProvider  from '../../FacUserProvider'
 import Item from '../../fastComponents/Item'
@@ -24,8 +25,10 @@ export default function Home() {
             <meta name="google" content="notranslate" />
             <meta name="robots" content="notranslate"></meta>
             <link rel="icon" href="/img/favicon.ico" sizes="any" />
-          </Head>  
+          </Head> 
+          <body translate="no" class="notranslate">
           <FacUserProvider /> 
+          </body>
       </Grid>
     </Grid>
   )
