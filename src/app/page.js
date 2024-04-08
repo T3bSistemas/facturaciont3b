@@ -22,6 +22,7 @@ export default function Home() {
               value="max-age=31536000; includeSubdomains"
             />
             <meta name="google" content="notranslate" />
+            <meta name="robots" content="notranslate"></meta>
             <link rel="icon" href="/img/favicon.ico" sizes="any" />
           </Head>  
           <FacUserProvider /> 
