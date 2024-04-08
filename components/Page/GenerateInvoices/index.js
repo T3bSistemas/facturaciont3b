@@ -87,6 +87,9 @@ export default function GenerateInvoices(){
                                     }else if(response.data.folio.includes('S:')){
                                         console.log("Entro 4-----")
                                         setFdata({...fdata, loading:false, snackbar: setSnackbar(fdata,'PRO')})
+                                    }else if(response.data.folio.includes('P:')){
+                                        console.log("Entro 4A-----")
+                                        setFdata({...fdata, loading:false, snackbar: setSnackbar(fdata,'PET')})
                                     }else if(response.data.folio.includes('VS:')){
                                         console.log("Entro 5-----")
                                         setFdata({...fdata, loading:false, snackbar: setSnackbar(fdata,'ERRAGREGAR-(VLF)')})

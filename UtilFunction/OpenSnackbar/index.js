@@ -90,6 +90,8 @@ export  function setSnackbar(fdata, tipo){
         return {...fdata.snackbar,tipo:tipo, open:true, severity:'warning', message: 'Este ticket ya fué facturado anteriormente, valide su información'}
     }  else if(tipo === 'PRO'){
         return {...fdata.snackbar,tipo:tipo, open:true, severity:'warning', message: 'Este ticket está en proceso de facturación, en breve le haremos llegar el comprobante a su cuenta de correo electrónico'}
+    }  else if(tipo === 'PET'){
+        return {...fdata.snackbar,tipo:tipo, open:true, severity:'warning', message: 'Este ticket está en proceso de facturación, en breve le haremos llegar el comprobante a su cuenta de correo electrónico o vuelve a intentar agregarlo'}
     } else if(tipo ==='TKA'){
         return {...fdata.snackbar,tipo:tipo, open:true, severity:'success', message: 'El ticket fué agregado'}
     } else if(tipo ==='TKAPS'){

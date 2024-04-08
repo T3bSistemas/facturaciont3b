@@ -21,6 +21,7 @@ export default function Home() {
               name="Strict-Transport-Security"
               value="max-age=31536000; includeSubdomains"
             />
+            <meta name="google" content="notranslate" />
             <link rel="icon" href="/img/favicon.ico" sizes="any" />
           </Head>  
           <FacUserProvider /> 
