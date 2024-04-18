@@ -36,7 +36,7 @@ export default function Start(){
                                 <b>FACTURACIÓN EN LÍNEA</b> 
                             </Typography>
                             <Typography variant={'h6'} component={'h6'} textAlign={'center'} mt={1} >
-                                Versión 4.0
+                                Versión 4-0
                             </Typography>
                         </Item>
                     </Grid>
