@@ -1,14 +1,14 @@
 import { Grid, Typography} from '@mui/material';
 
 import Item from '../../Item'
-export default function GridAll({text, variant, component, aling, separation, xs, md}){
+export default function GridAll({text, variant, component, aling, separation, fontSize, xs, md, mt}){
     return(
-        <Grid item xs={xs} md={md}>
+        <Grid item xs={xs} md={md} mt={(mt)?mt:0}>
             <Item>
                 {(text)&&
                     (text !== '')&&
-                        <Typography variant={variant} component={component} textAlign={aling} mt={separation} >
-                            <b>{text}</b>
+                        <Typography variant={variant} component={component} textAlign={aling} mt={separation} sx={{fontSize: (fontSize)?fontSize:'16px'}}>
+                            {text}
                         </Typography>
                 }
             </Item>

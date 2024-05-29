@@ -1,45 +1,81 @@
     
 export function validaDatos(input){
     if(input.rfc === ''){
-        return 'R';
+        return 2;
     }  
-    if(input.correo === ''){
-        return 'C';
-    } 
     if(input.razonSocial === ''){
-        return 'S';
+        return 3;
     }
     if(input.usoCFDI === ''){
-        return 'U';
+        return 4;
     }
     if(input.regimenFiscal === ''){
-        return 'F';
+        return 5;
     }
     if(input.domicilio.cp === ''){
-        return 'P';
+        return 6;
     }
-    return '';
+    if(input.correo === ''){
+        return 7;
+    }        
+    return 0;
 }
 
 export function validaCaptura(captura){
-    if(captura.fecha === ''){
-        return 'FCH'
+    if(captura.fechaCompra === ''){
+        return 14
     }
 
     if(captura.tienda <= 0){
-        return 'TND'
+        return 10
     }
 
     if(captura.caja === ''){
-        return 'CJA'
+        return 12
     }
 
     if(captura.ticket <= 0){
-        return 'TKT'
+        return 11
     }
 
     if(captura.total <= 0){
-        return 'TTL'
+        return 13
     }
-    return '';
+    return 0;
+}
+
+export function validaCapturaSinFecha(captura){
+    if(captura.tienda <= 0){
+        return 10
+    }
+
+    if(captura.caja === ''){
+        return 12
+    }
+
+    if(captura.ticket <= 0){
+        return 11
+    }
+
+    if(captura.total <= 0){
+        return 13
+    }
+    return 0;
+}
+
+
+export function validaRegExp(rfc, correo, correo2){
+    const patt = new RegExp("^[A-Z,Ñ,&]{3,4}[0-9]{2}[0-1][0-9][0-3][0-9][A-Z,0-9]?[A-Z,0-9]?[0-9,A-Z]?$");
+    if(!patt.test(rfc)){
+        return 1;
+    }
+
+    if (!(/^([\da-z_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/.test(correo))) {
+        return 8
+    }
+
+    if (correo2 !== '' && !((/^([\da-z_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/.test(correo2)))) {
+        return 9
+    }
+    return 0
 }

@@ -4,17 +4,14 @@ import dayjs                                        from 'dayjs';
 import axios                                        from 'axios';      
 
 import { useFContext, useSetFContext  }             from '../../../FacUserProvider';
-import { isNotAll, isNull, dataInteger, formatImp}  from '../../../UtilFunction/Util'
-import {setSnackbar}                                from '../../../UtilFunction/OpenSnackbar'
-import { validaCaptura, validaDatos }               from './Funciones'
+import { dataInteger, formatImp}                    from '../../../UtilFunction/Util'
+import {mensajes}                                   from '../../../UtilFunction/Mensajes'
+import { validaCaptura, validaDatos, validaRegExp,
+    validaCapturaSinFecha}                          from './Funciones'
 
-import { Grid, Typography, Divider, 
-         Popover, IconButton, Alert, Stack}         from '@mui/material';
+import { Grid, Alert, Stack}                        from '@mui/material';
 
-import DeleteOutlineOutlinedIcon                    from '@mui/icons-material/DeleteOutlineOutlined';
-import PostAddOutlinedIcon                          from '@mui/icons-material/PostAddOutlined';
-import ContactSupportOutlinedIcon                   from '@mui/icons-material/ContactSupportOutlined';
-import ReceiptOutlinedIcon                          from '@mui/icons-material/ReceiptOutlined';
+import AddOutlinedIcon                              from '@mui/icons-material/AddOutlined';
 
 import GridText                                     from '../../../fastComponents/Girds/GridText';
 import GridTextFiled                                from '../../../fastComponents/Girds/GridTextFiled';
@@ -22,147 +19,136 @@ import GirdSelect                                   from '../../../fastComponent
 import GirdDatePicker                               from '../../../fastComponents/Girds/GirdDatePicker';
 import GridLoadingButton                            from '../../../fastComponents/Girds/GridLoadingButton';
 import GirdBasicTable                               from '../../../fastComponents/Girds/GirdBasicTable';
-import ModalTicket                                  from '../../../fastComponents/ModalTicket';  
+import PopoverTicket                                from '../../../fastComponents/PopoverTicket'
 
 const re = /^[0-9\b]+$/;
 const rp = /^[0-9 .\b]+$/;
-const rs = /^[A-Za-z0-9 ^|\b]+$/
-const cr = /^[A-Za-z0-9 @<>ç%&(),;:"\b]+$/
 
 export default function GenerateInvoices(){
     const fdata                     = useFContext()
     const setFdata                  = useSetFContext()
-    const [actualizar,setActualizar]= useState(0)
     const [tickets,   setTickets]   = useState([])
-    const [captura,   setCaptura]   = useState({fechaCompra: dayjs(new Date())?.format('YYYY-MM-DD'), tienda: 0, caja: '01', ticket: 0, total: 0.00, region: 0, conexion:{tclave: '',host: '', puerto: '', servicio: '', base: '', driver: '', url: ''}, fclientes:{rfc:'', correo:'', razonSocial:'', correo2:'', usoCFDI: fdata.usosCFDI[0].value, regimenFiscal: fdata.RegimenesFiscales[0].value, domicilio: {cp:''}} })
+    const [captura,   setCaptura]   = useState({fechaCompra: '', tienda: 0, caja: '01', ticket: 0, total: 0.00, region: 0, conexion:{tclave: '',host: '', puerto: '', servicio: '', base: '', driver: '', url: ''}, fclientes:{rfc:'', correo:'', razonSocial:'', correo2:'', usoCFDI: fdata.usosCFDI[0].value, regimenFiscal: fdata.RegimenesFiscales[0].value, domicilio: {cp:''}} })
     const [input,     setInput]     = useState({rfc:'', correo:'', razonSocial:'', correo2:'', usoCFDI: fdata.usosCFDI[0].value, regimenFiscal: fdata.RegimenesFiscales[0].value, domicilio: {calle:'', numExt:'', numInt:'', colonia: '', munAlc: '', estado: '', pais:'', cp:''}})
-    const [habilitar, setHabilitar] = useState(true)   
-    const [anchorEl, setAnchorEl]   = useState(null);
-    const open = Boolean(anchorEl);
-    const [modal, setModal]         = useState(false);
+    const [habilitar, setHabilitar] = useState(true)  
+    const [mensaje, setMenasaje]    = useState(mensajes(0))
+    const mensajesAgregar           = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
+    const mensajesGenerar           = [1, 2, 3, 4, 5, 6, 7, 8, 9, 25, 26, 27, 38];
+    const [boton, setBoton]         = useState(0)
 
     async function rfc(){
         setInput({rfc:input.rfc, correo:'', razonSocial:'', correo2:'', usoCFDI: fdata.usosCFDI[0].value, regimenFiscal: fdata.RegimenesFiscales[0].value, domicilio: {calle:'', numExt:'', numInt:'', colonia: '', munAlc: '', estado: '', pais:'', cp:''}})
-        if(input.rfc !== ''){
-            const patt = new RegExp("^[A-Z,Ñ,&]{3,4}[0-9]{2}[0-1][0-9][0-3][0-9][A-Z,0-9]?[A-Z,0-9]?[0-9,A-Z]?$");
-            if(!patt.test(input.rfc)){
-                setTimeout(function(){
-                    setFdata({...fdata, snackbar: setSnackbar(fdata,'400-Válida tu RFC sea correcto')})
-                }, 100);
-            }         
-        }
+        setMenasaje((input.rfc !== '')?(!new RegExp("^[A-Z,Ñ,&]{3,4}[0-9]{2}[0-1][0-9][0-3][0-9][A-Z,0-9]?[A-Z,0-9]?[0-9,A-Z]?$").test(input.rfc))?mensajes(1):mensajes((mensaje.id === 1)?0:mensaje.id, mensaje.mensaje):mensajes((mensaje.id === 1)?0:mensaje.id, mensaje.mensaje))                   
     }
 
-    async function validateEmail(numCorreo){        
+    async function validateEmail(numCorreo){ 
         if( (numCorreo === 1 && input.correo !== '') ||   (numCorreo === 2 && input.correo2 !== '') ){
             if (!(/^([\da-z_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/.test((numCorreo===1)?input.correo:input.correo2))) {
-                const valida = (numCorreo===1)?'400-Válida tu Correo sea correcto':'400-Válida tu Correo 2 sea correcto';
-                setTimeout(function(){
-                    setFdata({...fdata, snackbar: setSnackbar(fdata,valida)})
-                }, 100);
+                setMenasaje(mensajes((numCorreo === 1)?8:9))
+            }else{
+                setMenasaje(mensajes(0))
             }
+        }else{
+            setMenasaje(mensajes((mensaje.id === 8 || mensaje.id === 9)?0:mensaje.id))
         }       
     }
 
+    const sinDiacriticos = (function(){
+        let de = 'ÁÃÀÄÂÉËÈÊÍÏÌÎÓÖÒÔÚÜÙÛÑÇáãàäâéëèêíïìîóöòôúüùûñç',
+             a = 'AAAAAEEEEIIIIOOOOUUUUNCaaaaaeeeeiiiioooouuuunc',
+            re = new RegExp('['+de+']' , 'ug');    
+        return texto =>
+            texto.replace(
+                re, 
+                match => a.charAt(de.indexOf(match))
+            );
+    })();
+
     async function agregar(){
+        setBoton(1)
+        setMenasaje(mensajes(0))
         if(tickets.length <= 50){
             const validaD= validaDatos(input)
-            if(validaD === ''){                
-                const existeT = tickets.filter(function (ticket) {return ticket.fechaCompra === captura.fechaCompra && ticket.tienda === captura.tienda && ticket.caja === captura.caja && ticket.ticket === captura.ticket && ticket.total===captura.total });
-                if(existeT.length <= 0){ 
-                    const validaC = validaCaptura(captura)
-                    if(validaC === '') {
-                        setFdata({...fdata,loading: true})
-                        //await axios.post(process.env.NEXT_PUBLIC_API_TICK+'/t3b-fact-ticket/agregarTicket',captura ,fdata.header)
-                        await axios.post(process.env.NEXT_PUBLIC_API_DASH+'/t3b-fact-das/agregarTicket',captura ,fdata.header)
-                        .then(function (response) {
-                            console.log("Entro-----")
-                            if(response.data !== null && response.data !== ''){
-                                console.log("Entro 1-----")
-                                if(response.data.folio != null && response.data.folio != ''){
-                                    console.log("Entro 2-----")
-                                    if(response.data.folio.includes('F:')){
-                                        console.log("Entro 3-----")
-                                        setFdata({...fdata, loading:false, snackbar: setSnackbar(fdata,'EXIT')})
-                                    }else if(response.data.folio.includes('S:')){
-                                        console.log("Entro 4-----")
-                                        setFdata({...fdata, loading:false, snackbar: setSnackbar(fdata,'PRO')})
-                                    }else if(response.data.folio.includes('P:')){
-                                        console.log("Entro 4A-----")
-                                        setFdata({...fdata, loading:false, snackbar: setSnackbar(fdata,'PET')})
-                                    }else if(response.data.folio.includes('VS:')){
-                                        console.log("Entro 5-----")
-                                        setFdata({...fdata, loading:false, snackbar: setSnackbar(fdata,'ERRAGREGAR-(VLF)')})
-                                    }else{
-                                        console.log("Entro 6-----")
-                                        setFdata({...fdata, loading:false, snackbar: setSnackbar(fdata,'ERRAGREGAR-(VLF)')})
-                                    }
-                                }else{
-                                    if(
-                                    (response.data.tipoPago !== null && response.data.tipoPago != '') && 
-                                    (response.data.region !== null && response.data.region != '') &&
-                                    (parseFloat(response.data.total).toFixed(2) === parseFloat(captura.total).toFixed(2))
-                                    ){
-                                        console.log("Entro 7-----")
-                                        if(response.data.total.tipoPago !== '2' && response.data.total.tipoPago !== '3' && response.data.total.tipoPago !== '7'){
-                                            console.log("Entro 8-----")
-                                            if(response.data.detalles.length  > 0){
-                                                console.log("Entro 9-----")
-                                                const TotalPS = response.data.detalles.filter(t => t.atmdesc === 'PS').reduce((acc, v) => acc += v.atmventa, 0);
-                                                if(TotalPS > 0){    
-                                                    console.log("Entro 10-----")                                               
-                                                    if(parseFloat(TotalPS).toFixed(2) === parseFloat(captura.total).toFixed(2)){
-                                                        console.log("Entro 11-----")  
-                                                        setFdata({...fdata,loading:false,  snackbar: setSnackbar(fdata,'NPS')}) 
-                                                    }else{
-                                                        console.log("Entro 12-----")  
-                                                        setCaptura({...captura, tienda: 0, caja: '01', ticket: 0, total: 0.00, region: 0, conexion:{tclave: '',host: '', puerto: '', servicio: '', base: '', driver: '', url: ''}})
-                                                        setTickets([...tickets,{fechaCompra: captura.fechaCompra, tienda: captura.tienda, caja: captura.caja, ticket: captura.ticket, total: parseFloat(parseFloat(captura.total)-parseFloat(TotalPS)).toFixed(2), accion: 'delete', region: response.data.region, conexion: response.data.conexion, tipoPago: response.data.tipoPago, detalles:response.data.detalles}])
-                                                        setFdata({...fdata,loading:false,  snackbar: setSnackbar(fdata,'TKAPS')}) 
-                                                        setHabilitar(false) 
-                                                    }                                                    
-                                                }else{
-                                                    console.log("Entro 13-----") 
-                                                    setCaptura({...captura, tienda: 0, caja: '01', ticket: 0, total: 0.00, region: 0, conexion:{tclave: '',host: '', puerto: '', servicio: '', base: '', driver: '', url: ''}})
-                                                    setTickets([...tickets,{fechaCompra: captura.fechaCompra, tienda: captura.tienda, caja: captura.caja, ticket: captura.ticket, total: captura.total, accion: 'delete', region: response.data.region, conexion: response.data.conexion, tipoPago: response.data.tipoPago, detalles:response.data.detalles}])
-                                                    setFdata({...fdata,loading:false,  snackbar: setSnackbar(fdata,'TKA')}) 
-                                                    setHabilitar(false) 
-                                                }                                
-                                            }else{
-                                                console.log("Entro 14-----")
-                                                setFdata({...fdata,loading:false,  snackbar: setSnackbar(fdata,'NDET')}) 
-                                            }                                    
+            if(validaD === 0){   
+                const validaR = validaRegExp(input.rfc, input.correo, input.correo2);
+                if(validaR === 0){
+                    const existeT = tickets.filter(function (ticket) {return ticket.fechaCompra === captura.fechaCompra && ticket.tienda === captura.tienda && ticket.caja === captura.caja && ticket.ticket === captura.ticket });
+                    if(existeT.length <= 0){ 
+                        const validaC = validaCaptura(captura)
+                        if(validaC === 0) {
+                            setFdata({...fdata,loading: true})
+                            await axios.post(process.env.NEXT_PUBLIC_API_DASH+'/t3b-fact-das/agregarTicket',captura ,fdata.header)
+                            .then(function (response) {
+                                if(response.data !== null && response.data !== ''){
+                                    if(response.data.folio != null && response.data.folio != ''){
+                                        if(response.data.folio.includes('F:')){
+                                            setMenasaje(mensajes(19))
+                                        }else if(response.data.folio.includes('S:')){
+                                            setMenasaje(mensajes(20))
+                                        } else if(response.data.folio.includes('VS:')){
+                                            setMenasaje(mensajes(21))
                                         }else{
-                                            console.log("Entro 15-----")
-                                            setFdata({...fdata, loading:false, snackbar: setSnackbar(fdata,'TKP')})
+                                            setMenasaje(mensajes('Este ticket ya tiene este Folio de factura. '+response.data.folio))
                                         }
                                     }else{
-                                        console.log('Entro 16----- '+response.data.tipoPago+' '+response.data.region+' '+parseFloat(response.data.total).toFixed(2)+' '+parseFloat(captura.total).toFixed(2) )
-                                        setFdata({...fdata, loading:false, snackbar: setSnackbar(fdata,'TKN')})
-                                    }                                    
-                                }                                                               
-                            } else{
-                                setFdata({...fdata, loading:false, snackbar: setSnackbar(fdata,'ERRAGREGAR-(1)')})
-                            }            
-                        }).catch(function (error) {   
-                            console.log(error)
-                            if(error.response.status === 400){
-                                setFdata({...fdata,loading:false, snackbar: setSnackbar(fdata,'400-'+error.response.data)})
-                            } else{
-                                setFdata({...fdata, loading:false, snackbar: setSnackbar(fdata,'ERRAGREGAR-(0)')})
-                            }                           
-                        })
+                                        if(
+                                        (response.data.tipoPago !== null && response.data.tipoPago != '') && 
+                                        (response.data.region !== null && response.data.region != '')                                    
+                                        ){
+                                            if(parseFloat(response.data.total).toFixed(2) === parseFloat(captura.total).toFixed(2)){
+                                                if(response.data.tipoPago !== '02' && response.data.tipoPago !== '03' && response.data.tipoPago !== '07'){
+                                                    if(response.data.detalles.length  > 0){
+                                                        const TotalPS = response.data.detalles.filter(t => t.atmdesc === 'PS').reduce((acc, v) => acc += v.atmventa, 0);
+                                                        if(TotalPS > 0){                                                
+                                                            if(parseFloat(TotalPS).toFixed(2) === parseFloat(captura.total).toFixed(2)){
+                                                                setMenasaje(mensajes(22))
+                                                            }else{ 
+                                                                setCaptura({...captura, tienda: 0, caja: '01', ticket: 0, total: 0.00, region: 0, conexion:{tclave: '',host: '', puerto: '', servicio: '', base: '', driver: '', url: ''}})
+                                                                setTickets([...tickets,{tienda: captura.tienda, ticket: captura.ticket, caja: captura.caja, total: parseFloat(parseFloat(captura.total)-parseFloat(TotalPS)).toFixed(2), fechaCompra: captura.fechaCompra, accion: 'delete', region: response.data.region, conexion: response.data.conexion, tipoPago: response.data.tipoPago, detalles:response.data.detalles}])
+                                                                setHabilitar(false) 
+                                                                setMenasaje(mensajes(23))
+                                                            }                                                    
+                                                        }else{
+                                                            setCaptura({...captura, tienda: 0, caja: '01', ticket: 0, total: 0.00, region: 0, conexion:{tclave: '',host: '', puerto: '', servicio: '', base: '', driver: '', url: ''}})
+                                                            setTickets([...tickets,{tienda: captura.tienda, ticket: captura.ticket, caja: captura.caja, total: captura.total, fechaCompra: captura.fechaCompra, accion: 'delete', region: response.data.region, conexion: response.data.conexion, tipoPago: response.data.tipoPago, detalles:response.data.detalles}])
+                                                            setHabilitar(false) 
+                                                            setMenasaje(mensajes(24))
+                                                        }                                
+                                                    }else{ 
+                                                        setMenasaje(mensajes(17))
+                                                    }                                    
+                                                }else{
+                                                    setMenasaje(mensajes(21))
+                                                }
+                                            }else{
+                                                setMenasaje(mensajes(22))
+                                            }                                        
+                                        }else{
+                                            setMenasaje(mensajes(18))
+                                        }                                    
+                                    }                                                               
+                                } else{
+                                    setMenasaje(mensajes(17))
+                                }            
+                            }).catch(function (error) {  
+                                (error.mensaje === 'Network Error')?setMenasaje(mensajes(17)):(error.response.status === 400)?setMenasaje(mensajes(error.response.data)):setMenasaje(mensajes(17))                          
+                            }).finally(function(){
+                                setFdata({...fdata,loading: false}) 
+                            })
+                        } else{
+                            setMenasaje(mensajes(validaC))
+                        }
                     } else{
-                        setFdata({...fdata,loading:false, snackbar: setSnackbar(fdata,validaC)})
+                        setMenasaje(mensajes(16))
                     }
-                } else{
-                    setFdata({...fdata,loading:false, snackbar: setSnackbar(fdata,'TKYA')})
+                }else{
+                    setMenasaje(mensajes(validaR))
                 }
             } else {
-                setFdata({...fdata,loading:false, snackbar: setSnackbar(fdata,validaD)})
+                setMenasaje(mensajes(validaD))
             }
-         }else{
-            setFdata({...fdata,loading:false, snackbar: setSnackbar(fdata,'TK50')})
+        }else{
+            setMenasaje(mensajes(15))
         }
     }
 
@@ -171,7 +157,6 @@ export default function GenerateInvoices(){
             setFdata({...fdata,loading: true}) 
             tickets.splice(index,1);
             setTickets((tickets.length > 0)?tickets:[]) 
-            setActualizar(tickets.length);
         } catch (error) {
             console.log(error)
         } finally {
@@ -181,135 +166,158 @@ export default function GenerateInvoices(){
     
 
     async function generar(){
+        setBoton(2)
+        setMenasaje(mensajes(0))
         if(tickets.length  > 0){
             const validaD= validaDatos(input)
-            if(validaD === ''){
-                const patt = new RegExp("^[A-Z,Ñ,&]{3,4}[0-9]{2}[0-1][0-9][0-3][0-9][A-Z,0-9]?[A-Z,0-9]?[0-9,A-Z]?$");
-                if(patt.test(input.rfc)){
-                    if (/^([\da-z_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/.test(input.correo)) {
-                        if ((/^([\da-z_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/.test(input.correo2)) || input.correo2 === '') {
-                            setFdata({...fdata,loading: true})
-                            //await axios.post(process.env.NEXT_PUBLIC_API_TICK+'/t3b-fact-ticket/generarFactura',{
-                                await axios.post(process.env.NEXT_PUBLIC_API_DASH+'/t3b-fact-das/generarFactura',{
-                                tickets: tickets,
-                                fclientes: input
-                            },fdata.header)
-                            .then(function (response) {
-                                const tikets = response.data;
-                                if(tikets.length > 0){
-                                    const errors = tikets.filter(function (tiket) {return  tiket.folio === null || tiket.folio === ''});
-                                    if(errors.length === 0){                        
-                                        setFdata({...fdata,loading:false, snackbar: setSnackbar(fdata,'OK')}) 
-                                        setTickets([])
-                                    }else {                            
-                                        if(errors[0].xml !== null){
-                                            setFdata({...fdata,loading:false, snackbar:  {...fdata.snackbar,tipo:'ERROR', open:true, severity:'error',   message: errors[0].xml} })
-                                        }else{
-                                            setFdata({...fdata,loading:false, snackbar: setSnackbar(fdata,'SEP')})
-                                        }                  
-                                    }                                    
-                                }else{                        
-                                    setFdata({...fdata,loading:false, snackbar: setSnackbar(fdata,'ERRGEN')})
-                                }                    
-                            })
-                            .catch(function (error) {
-                                console.log(error);
-                                setFdata({...fdata,loading:false, snackbar: setSnackbar(fdata,'ERRAGREGAR-TIKD')})
-                            })                       
-                        } else{
-                            setTimeout(function(){
-                                setFdata({...fdata, snackbar: setSnackbar(fdata,'400-Válida tu Correo 2 sea correcto')})
-                            }, 100);
-                        }                        
-                    } else{
-                        setTimeout(function(){
-                            setFdata({...fdata, snackbar: setSnackbar(fdata,'400-Válida tu Correo sea correcto')})
-                        }, 100);
-                    }
+            if(validaD === 0){
+                const validaR = validaRegExp(input.rfc, input.correo, input.correo2);
+                if(validaR === 0){
+                    setFdata({...fdata,loading: true})
+                    await axios.post(process.env.NEXT_PUBLIC_API_DASH+'/t3b-fact-das/generarFactura',{
+                        tickets: tickets,
+                        fclientes: input
+                    },fdata.header)
+                    .then(function (response) {
+                        const tikets = response.data;
+                        if(tikets.length > 0){
+                            const errors = tikets.filter(function (tiket) {return  tiket.folio === null || tiket.folio === ''});
+                            if(errors.length === 0){                        
+                                setMenasaje(mensajes(27))
+                                setTickets([])
+                            }else {                            
+                                if(errors[0].xml !== null){
+                                    setMenasaje(mensajes(38, errors[0].xml))                                            
+                                }else{
+                                    setMenasaje(mensajes(26))
+                                }                  
+                            }                                    
+                        }else{              
+                            setMenasaje(mensajes(26))
+                        }                    
+                    })
+                    .catch(function (error) {                        
+                        setMenasaje(mensajes(26))
+                    }).finally(function(){
+                        setFdata({...fdata,loading: false})
+                    })               
                 }else{
-                    setTimeout(function(){
-                        setFdata({...fdata, snackbar: setSnackbar(fdata,'400-Válida tu RFC sea correcto')})
-                    }, 100);  
-                }        
+                    setMenasaje(mensajes(validaR))
+                }   
             }else {
-                setFdata({...fdata,loading:false, snackbar: setSnackbar(fdata,validaD)})
-            }
-            
+                setMenasaje(mensajes(validaD))
+            }            
         } else{
-            setFdata({...fdata,loading:false, snackbar: setSnackbar(fdata,'TKV')})
+            setMenasaje(mensajes(25))
         }
     }
     
     return( 
-        <Grid container >
-            <GridText text={'BIENVENIDO A NUESTRO SISTEMA DE FACTURACIÓN'}                                                                             variant={'h5'} component={'h1'} aling='center' separation={2} xs={12} md={12}/>
-            <GridText text={'Recuerda que el periodo de vigencia en la facturación no debe ser mayor a 30 días naturales en que se efectuó tu compra'} variant={'h8'} component={'h8'} aling='center' separation={0} xs={12} md={12}/>
-            <Stack sx={{ width: '100%' }} spacing={2}>
-               <Alert severity="info" >
-                 Paso 1: Ingresa tus datos fiscales.<br></br>
-                 Los campos marcados con * son obligatorios.
-               </Alert>
-            </Stack>
-            <Grid item xs={12} md={12} mt={4}>
+        <Grid container mt={8}>
+            <GridText text={<b>Facturación Tiendas3B 📄</b>} variant={'h5'}  component={'h1'} aling='center'  fontSize={'22px'} xs={12} md={12} mt={2}/>
+            <GridText text={'Gracias por comprar en Tiendas 3B 🛒​🔥​'}  variant={'h6'}  component={'h6'}   aling='center'  xs={12} md={12} mt={2}/>
+            <GridText text={<>Tienes <b>30 días naturales</b> desde que realizaste la compra para solicitar tu factura 😊​​</>}   variant={'h6'}  component={'h6'}   aling='center'  xs={12} md={12}/>
+            <Grid item xs={12} md={12} mt={3}>
                 <Grid container >
-                    <GridText text={'Datos fiscales'} variant={'h6'} component={'h6'} aling='left' xs={12} md={12}/>
+                    <GridText text={<b>1. Datos fiscales</b>} variant={'h5'} component={'h5'} aling='left' fontSize={'22px'} xs={12} md={12}/>
                 </Grid> 
                 <Grid container >
-                    <GridTextFiled id={'rfc'}       label={(fdata.loading)?'Espera..':'RFC'}                   actionOnBlur={rfc}                                                                                               value={input.rfc}    action={({target})=>{setInput({...input,rfc:target.value.toUpperCase()}); setCaptura({...captura,fclientes:{...captura.fclientes,rfc:target.value.toUpperCase()}});}}     variant={'standard'} focused={true} required={true} fullWidth={true}                                  error={(fdata.snackbar.tipo === 'R')}  disabled={fdata.loading} xs={6} md={4} />
-                    <GridTextFiled id={'correo'}    label={(fdata.loading)?'Espera..':'Correo electrónico'}    actionOnBlur={()=>{  setHabilitar( (validaCaptura(captura) === '')?(validaDatos(input) === '')?false:true:true); validateEmail(1);  }}  value={input.correo} action={({target})=>{setInput({...input,correo:target.value});setCaptura({...captura,fclientes:{...captura.fclientes,correo:target.value}});}}  variant={'standard'} focused={true} required={true} fullWidth={true} placeholder={'correo@mail.com'}  error={(fdata.snackbar.tipo === 'C')}  disabled={fdata.loading} xs={6} md={4} />
-                    <GirdSelect focused={true} fullWidth={true} inputLabel={(fdata.loading)?'Espera..':'Uso CFDI *'} id={'cfdi'} value={input.usoCFDI} action={(event)=>{setInput({...input,usoCFDI: event.target.value}); setCaptura({...captura,fclientes:{...captura.fclientes,usoCFDI:event.target.value}});}} items={fdata.usosCFDI} xs={6} md={4} />
+                    <Grid item xs={12} md={12} mt={2}>
+                        <Stack sx={{ width: '100%' }}>
+                            <Alert severity="info" sx={{color: '#000000'}}>
+                                    <b>Ingresa tus datos fiscales.</b><br></br>
+                                    Los campos marcados con * son obligatorios 👆​.
+                            </Alert>
+                        </Stack>
+                    </Grid>
+                </Grid>
+                <Grid container mt={3}>
+                    <GridTextFiled id={'rfc'} label={(fdata.loading)?'Espera..':'RFC'} actionOnBlur={rfc} value={input.rfc} action={({target})=>{setInput({...input,rfc:target.value.toUpperCase().trim()}); setCaptura({...captura,fclientes:{...captura.fclientes,rfc:target.value.toUpperCase()}});}} variant={'standard'} focused={true} required={true} fullWidth={true} error={(mensaje.id === 1 ||  mensaje.id === 2)}  helperText={(mensaje.id === 1 ||  mensaje.id === 2)&&mensaje.mensaje} disabled={fdata.loading} xs={12} md={3.5} mt={2}/>
+                    <Grid item xs={0} md={0.5} mt={2}/>
+                    <GridTextFiled id={'nomraz'} label={(fdata.loading)?'Espera..':'Nombre/Razón Social'} actionOnBlur={()=>{setHabilitar( (validaCaptura(captura) === 0)?(validaDatos(input) === 0)?false:true:true)}}  value={input.razonSocial} action={({target})=>{setInput({...input,razonSocial:sinDiacriticos(target.value.toUpperCase())}); setCaptura({...captura,fclientes:{...captura.fclientes,razonSocial:target.value.toUpperCase()}});}} variant={'standard'} focused={true} required={true} fullWidth={true} error={(mensaje.id === 3)} helperText={(mensaje.id === 3)&&mensaje.mensaje} disabled={fdata.loading} inputProps={{ maxLength: 300 }} xs={12} md={8} mt={2}/>
+                    <GirdSelect focused={true} fullWidth={true} inputLabel={(fdata.loading)?'Espera..':'Uso CFDI *'} id={'cfdi'} value={input.usoCFDI} action={(event)=>{setInput({...input,usoCFDI: event.target.value}); setCaptura({...captura,fclientes:{...captura.fclientes,usoCFDI:event.target.value}});}} items={fdata.usosCFDI} disabled={fdata.loading} xs={12} md={3.5} mt={2}/>
+                    <Grid item xs={0} md={0.5} mt={2}/>
+                    <GirdSelect focused={true} fullWidth={true} inputLabel={(fdata.loading)?'Espera..':'Régimen Fiscal *'} id={'regfis'} value={input.regimenFiscal} action={(event)=>{setInput({...input,regimenFiscal: event.target.value}); setCaptura({...captura,fclientes:{...captura.fclientes,regimenFiscal:event.target.value}});}} items={fdata.RegimenesFiscales} disabled={fdata.loading} xs={12} md={8} mt={2}/>
+                    <GridTextFiled id={'cp'} label={(fdata.loading)?'Espera..':'Código Postal'} actionOnBlur={()=>{setHabilitar( (validaCaptura(captura) === 0)?(validaDatos(input) === 0)?false:true:true)}} value={input.domicilio.cp} action={({target})=>{if(target.value === '' || re.test(target.value)){setInput({...input,domicilio:{...input.domicilio,cp:target.value}}); setCaptura({...captura,fclientes:{...captura.fclientes,domicilio:{...captura.fclientes.domicilio, cp: target.value}}});}}}   variant={'standard'} focused={true} required={true}  fullWidth={true} placeholder={'12345'} error={(mensaje.id === 6)} helperText={(mensaje.id === 6)&&mensaje.mensaje}  disabled={fdata.loading} inputProps={{ maxLength: 5 }} xs={12} md={3.5} mt={2}/>
+                    <Grid item xs={0} md={0.5} mt={2}/>
+                    <GridTextFiled id={'correo'} label={(fdata.loading)?'Espera..':'Correo electrónico'} actionOnBlur={()=>{setHabilitar( (validaCaptura(captura) === 0)?(validaDatos(input) === 0)?false:true:true); validateEmail(1);}} value={input.correo} action={({target})=>{setInput({...input,correo:target.value.trim()}); setCaptura({...captura,fclientes:{...captura.fclientes,correo:target.value.trim()}});}} variant={'standard'} focused={true} required={true}  fullWidth={true} placeholder={'correo@mail.com'} error={(mensaje.id === 7  ||  mensaje.id === 8)} helperText={(mensaje.id === 7  ||  mensaje.id === 8)&&mensaje.mensaje} disabled={fdata.loading} xs={12} md={4} mt={2}/>
+                    <Grid item xs={0} md={0.5} mt={2}/>
+                    <GridTextFiled id={'correo2'} label={(fdata.loading)?'Espera..':'Correo electrónico 2'} actionOnBlur={()=>{validateEmail(2);}} value={input.correo2} action={({target})=>{setInput({...input,correo2:target.value.trim()}); setCaptura({...captura,fclientes:{...captura.fclientes,correo2:target.value.trim()}});}} variant={'standard'} focused={true} required={false} fullWidth={true} placeholder={'correo@mail.com'} error={(mensaje.id === 9)} helperText={(mensaje.id === 9)&&mensaje.mensaje} disabled={fdata.loading} xs={12} md={3.5} mt={2}/>
+                </Grid>               
+            </Grid>
+            <Grid item xs={12} md={12} mt={5}> 
+                <Grid container >
+                    <GridText text={<b>2. Información de Tickets</b>} variant={'h5'} component={'h5'} aling='left' fontSize={'22px'} xs={12} md={2.8} />
+                    <GridText text={<b>Encuéntralos acá 👉 </b>} variant={'h8'} component={'h8'} fontSize={'14px'} aling='left' xs={6} md={1.8} mt={0.5}/>     
+                    <Grid item xs={6} md={1} mt={0.5}>
+                        <PopoverTicket/>    
+                    </Grid>   
+                    <Grid item xs={0} md={5}></Grid>           
                 </Grid>
                 <Grid container >
-                    <GridTextFiled id={'nomraz'}    label={(fdata.loading)?'Espera..':'Nombre/Razón Social'}    actionOnBlur={()=>{setHabilitar( (validaCaptura(captura) === '')?(validaDatos(input) === '')?false:true:true)}} value={input.razonSocial}    action={({target})=>{setInput({...input,razonSocial:target.value.toUpperCase()}); setCaptura({...captura,fclientes:{...captura.fclientes,razonSocial:target.value.toUpperCase()}});}} variant={'standard'} focused={true} required={true} fullWidth={true}                                 error={(fdata.snackbar.tipo === 'S')}  disabled={fdata.loading}   inputProps={{ maxLength: 300 }} xs={6} md={4} />
-                    <GridTextFiled id={'correo2'}   label={(fdata.loading)?'Espera..':'Correo electrónico 2'}   actionOnBlur={()=>{validateEmail(2);}}                                                                                                              value={input.correo2}        action={({target})=>{setInput({...input,correo2:target.value}); setCaptura({...captura,fclientes:{...captura.fclientes,correo2:target.value}});}}     variant={'standard'} focused={true} required={false} fullWidth={true} placeholder={'correo@mail.com'}                                          disabled={fdata.loading}   xs={6} md={4} />
-                    <GirdSelect focused={true} fullWidth={true} inputLabel={(fdata.loading)?'Espera..':'Régimen Fiscal *'} id={'regfis'} value={input.regimenFiscal} action={(event)=>{setInput({...input,regimenFiscal: event.target.value}); setCaptura({...captura,fclientes:{...captura.fclientes,regimenFiscal:event.target.value}});}} items={fdata.RegimenesFiscales} xs={6} md={4} />
-                </Grid>
+                    <Grid item xs={12} md={12} mt={2}>
+                        <Stack sx={{ width: '100%' }} >
+                            <Alert severity="info" sx={{color: '#000000'}}>
+                                <b>Agrega los siguientes datos para localizar tu Ticket.</b><br></br>
+                                Puedes agregar más de un ticket. Los tickets de una misma tienda se suman en una sola factura 😊​.
+                            </Alert>
+                        </Stack>  
+                    </Grid>
+                </Grid>                
+            </Grid>     
+            <Grid item xs={12} md={12} mt={4}>
                 <Grid container >
-                    <Grid item xs={0} md={8} /> 
-                    <GridTextFiled id={'cp'}        label={(fdata.loading)?'Espera..':'Código Postal'}         actionOnBlur={()=>{setHabilitar( (validaCaptura(captura) === '')?(validaDatos(input) === '')?false:true:true)}}  value={input.domicilio.cp}          action={({target})=>{if(target.value === '' || re.test(target.value)){setInput({...input,domicilio:{...input.domicilio,cp:target.value}}); setCaptura({...captura,fclientes:{...captura.fclientes,domicilio:{...captura.fclientes.domicilio, cp: target.value}}});}}}      variant={'standard'} focused={true} required={true}  fullWidth={true} disabled={fdata.loading} error={(fdata.snackbar.tipo === 'P')}  inputProps={{ maxLength: 5 }}   xs={12} md={4} />
+                    <GridTextFiled id={'tienda'} label={(fdata.loading)?'Espera..':'Sucursal'} actionOnBlur={()=>{setHabilitar( (validaCaptura(captura) === 0)?(validaDatos(input) === 0)?false:true:true)}}  value={captura.tienda} action={({target})=>{(target.value === '' || re.test(target.value))&&setCaptura({...captura,tienda:dataInteger(target.value)})}} variant={'standard'} focused={true} required={true} fullWidth={true} disabled={fdata.loading} placeholder={'9999'} error={(mensaje.id === 10)} helperText={(mensaje.id === 10)&&mensaje.mensaje} inputProps={{maxLength: 4}} xs={5.5} md={2.1} mt={2}/>
+                    <Grid item xs={1} md={0.3} mt={2}/>
+                    <GridTextFiled id={'numTicket'} label={(fdata.loading)?'Espera..':'Num. Ticket'} actionOnBlur={()=>{setHabilitar( (validaCaptura(captura) === 0)?(validaDatos(input) === 0)?false:true:true)}}  value={captura.ticket} action={({target})=>{(target.value === '' || re.test(target.value))&&setCaptura({...captura,ticket:dataInteger(target.value)})}} variant={'standard'} focused={true} required={true} fullWidth={true} disabled={fdata.loading} placeholder={'999'} error={(mensaje.id === 11)} helperText={(mensaje.id === 11)&&mensaje.mensaje} inputProps={{maxLength: 3}} xs={5.5} md={2.1} mt={2}/>
+                    <Grid item xs={0} md={0.3} mt={2}/>
+                    <GirdSelect    id={'caja'} inputLabel={(fdata.loading)?'Espera..':'Caja *'} focused={true} fullWidth={true} value={captura.caja} action={({target})=>{(target.value === '' || re.test(target.value))&&setCaptura({...captura,caja:target.value})}} items={[{value:'01',item:'01'},{value:'02',item:'02'},{value:'03',item:'03'},{value:'04',item:'04'},{value:'05',item:'05'},{value:'06',item:'06'},{value:'07',item:'07'},{value:'08',item:'08'},{value:'09',item:'09'},{value:'10',item:'10'}]} disabled={fdata.loading} xs={5.5} md={2.1} mt={2}/>
+                    <Grid item xs={1} md={0.3} mt={2}/>
+                    <GridTextFiled id={'importe'} label={(fdata.loading)?'Espera..':'Total compra'} actionOnBlur={()=>{setHabilitar( (validaCaptura(captura) === 0)?(validaDatos(input) === 0)?false:true:true)}} value={captura.total} action={({target})=>{(target.value === '' || rp.test(target.value))&&setCaptura({...captura,total:formatImp(target.value)})}} variant={'standard'} focused={true} required={true} fullWidth={true} disabled={fdata.loading} placeholder={'99999.99'}   error={(mensaje.id === 13)} helperText={(mensaje.id === 13)&&mensaje.mensaje} inputProps={{maxLength: 8}} xs={5.5} md={2.1} mt={2} autoComplete={'off'}/>
+                    <Grid item xs={0} md={0.3} mt={2}/>
+                    <GirdDatePicker label={'Fecha de compra'} fecha={captura.fechaCompra} accion={(newValue) => { setCaptura({...captura,fechaCompra: dayjs(new Date(newValue))?.format('YYYY-MM-DD')}); setHabilitar((validaDatos(input) === 0)?(validaCaptura(captura) === 0)?false:(validaCaptura(captura) === 14)?(newValue !== undefined && newValue !== null && newValue !== '')?(validaCapturaSinFecha(captura) === 0)?false:true:true:true:true )}} disabled={fdata.loading} error={(mensaje.id === 14)} helperText={(mensaje.id === 14)&&mensaje.mensaje} xs={12} md={2.1} mt={2}/>
+                </Grid>
+            </Grid>     
+            <Grid item xs={2} md={5.5} />       
+            {(mensajesAgregar.includes(mensaje.id) && boton === 1)&&
+                <Grid item xs={12} md={12} mt={1}>
+                    <Grid container >
+                        <Grid item xs={0} md={6} />
+                        <Grid item xs={12} md={6} >
+                            <Alert severity={mensaje.severity} onClose={() => {setMenasaje(mensajes(0))}}>{mensaje.mensaje}</Alert>
+                        </Grid>                       
+                    </Grid>
+                </Grid>                
+            }     
+            <Grid item xs={12} md={12} mt={2}>                        
+                <Grid container spacing={1}>
+                    <Grid  xs={0} md={8}/>
+                    <GridLoadingButton label={'Limpiar'} click={()=>{setCaptura({...captura,fechaCompra: '', tienda: 0, caja: '01', ticket: 0, total: 0.00})}} loading={fdata.loading} variant={'outlined'} color={'error'} fullWidth={true} disabled={false} xs={6} md={2}/>
+                    <GridLoadingButton label={'Agregar'} click={agregar} loading={fdata.loading} variant={'contained'} icon={<AddOutlinedIcon />} color={'error'} fullWidth={true} disabled={habilitar} xs={6} md={2}/>
+                </Grid>
+            </Grid>                 
+            <Grid item xs={12} md={12} mt={4}> 
+                <Grid container >
+                    <GridText text={<b>Tickets localizados</b>} variant={'h5'} component={'h5'} aling='left' fontSize={'22px'} xs={12} md={3}/>
+                </Grid>
+            </Grid> 
+            <GirdBasicTable rows={tickets} colums={fdata.columsFactura} funcion={quitar} xs={12} md={12} separation={3}/>
+            {(mensajesGenerar.includes(mensaje.id) && boton === 2)&&
+                <Grid item xs={12} md={12} mt={1}>
+                    <Grid container >
+                        <Grid item xs={0} md={6} />
+                        <Grid item xs={12} md={6} >
+                            <Alert severity={mensaje.severity} onClose={() => {setMenasaje(mensajes(0))}}>{mensaje.mensaje}</Alert>
+                        </Grid>                       
+                    </Grid>
+                </Grid>                
+            }  
+            <Grid item xs={12} md={12}> 
+                <Grid container >
+                    <Grid item xs={0} md={9} mt={2}/>
+                    <GridLoadingButton label={'Generar Factura'} click={()=>{generar()}} loading={fdata.loading} variant={'contained'} color={'error'} fullWidth={true} size={'large'} disabled={!(tickets.length > 0)} xs={12} md={3} mt={4}/>
                 </Grid>
             </Grid>
-            
-            <GridText text={''} variant={'h6'} component={'h6'} aling='left' separation={3} xs={12} md={12} />
-            <Stack sx={{ width: '100%' }} >
-                <Alert severity="info" >
-                    Paso 2: Ingresa la información de los tickets. <br></br>
-                    Puedes agregar más de un ticket a una misma factura. Los tickets de una misma tienda se calculan en una sola factura. Consulta los campos aquí:
-                    <IconButton aria-label="delete" onClick={()=>{setModal(true)}}>
-                        <ContactSupportOutlinedIcon  onMouseEnter={(event) => {setAnchorEl(event.currentTarget);}} onMouseLeave={()=>{setAnchorEl(null);}}/>
-                    </IconButton>      
-                    <ModalTicket modal={modal} setModal={setModal}/>
-                </Alert>
-            </Stack>  
-
-            <GridText text={'Información de Tickets'} variant={'h6'} component={'h6'} aling='left' separation={1} xs={12} md={12} />            
-            <Grid item xs={12} md={12} mt={1}>
-                <Grid container >
-                    <GirdDatePicker label={'Fecha de compra *'}  fecha={captura.fechaCompra} accion={(newValue) => setCaptura({...captura,fechaCompra: dayjs(new Date(newValue))?.format('YYYY-MM-DD')})} focused={true} xs={6}  md={3} />
-                    <GridTextFiled id={'tienda'}       label={(fdata.loading)?'Espera..':'Sucursal'}           actionOnBlur={()=>{setHabilitar( (validaCaptura(captura) === '')?(validaDatos(input) === '')?false:true:true)}}  value={captura.tienda}   action={({target})=>{(target.value === '' || re.test(target.value))&&setCaptura({...captura,tienda:dataInteger(target.value)})}} variant={'standard'} focused={true} required={true} fullWidth={true} disabled={fdata.loading} placeholder={'999'}         error={(fdata.snackbar.tipo === 'TND')}   inputProps={{ maxLength: 4 }}  xs={6}   md={2} />
-                    {(fdata.loading === false)?
-                    <GirdSelect    id={'caja'}  focused={true} fullWidth={true} inputLabel={(fdata.loading)?'Espera..':'No. de caja *'}  value={captura.caja} action={({target})=>{(target.value === '' || re.test(target.value))&&setCaptura({...captura,caja:target.value})}} items={[{value:'01',item:'01'},{value:'02',item:'02'},{value:'03',item:'03'},{value:'04',item:'04'},{value:'05',item:'05'},{value:'06',item:'06'},{value:'07',item:'07'},{value:'08',item:'08'},{value:'09',item:'09'},{value:'10',item:'10'}]} xs={6} md={2} />
-                    :
-                    <GridTextFiled id={'caja'}         label={(fdata.loading)?'Espera..':'No. de caja'}    value={captura.caja}    variant={'standard'} focused={true} required={true} fullWidth={true} disabled={true} placeholder={'09'}          error={((fdata.snackbar.tipo === 'CJA'))} inputProps={{ maxLength: 2 }}  xs={6}  md={2}/> 
-                    }
-                    <GridTextFiled id={'numTicket'}    label={(fdata.loading)?'Espera..':'No. de ticket'}      actionOnBlur={()=>{setHabilitar( (validaCaptura(captura) === '')?(validaDatos(input) === '')?false:true:true)}}  value={captura.ticket}   action={({target})=>{(target.value === '' || re.test(target.value))&&setCaptura({...captura,ticket:dataInteger(target.value)})}} variant={'standard'} focused={true} required={true} fullWidth={true} disabled={fdata.loading} placeholder={'999'}         error={(fdata.snackbar.tipo === 'TKT')}   inputProps={{ maxLength: 4 }}  xs={6}  md={2}/>
-                    <GridTextFiled id={'importe'}      label={(fdata.loading)?'Espera..':'Importe compra'}     actionOnBlur={()=>{setHabilitar( (validaCaptura(captura) === '')?(validaDatos(input) === '')?false:true:true)}}  value={captura.total}    action={({target})=>{(target.value === '' || rp.test(target.value))&&setCaptura({...captura,total:formatImp(target.value)})}}    variant={'standard'} focused={true} required={true} fullWidth={true} disabled={fdata.loading} placeholder={'99999.99'}   error={(fdata.snackbar.tipo === 'TTL')}   inputProps={{ maxLength: 10 }}  xs={12}  md={3} autoComplete={'off'}/>
-                </Grid>
-            </Grid>
-
-            <Grid item xs={2} md={8} />
-            <GridLoadingButton label={'Limpiar'} click={()=>{setTickets([])}} loading={fdata.loading} variant={'outlined'} icon={<DeleteOutlineOutlinedIcon />} color={'error'}     fullWidth={false} disabled={false}      xs={5} md={2}/>
-            <GridLoadingButton label={'Agregar'} click={agregar}              loading={fdata.loading} variant={'outlined'} icon={<PostAddOutlinedIcon />}       color={'success'}   fullWidth={false} disabled={habilitar}  xs={5} md={2}/>
-            
-            
-
-            {(fdata.loading === false)&&
-                <GirdBasicTable rows={tickets} colums={fdata.columsFactura} funcion={quitar} xs={12} md={12} mt={3}/>
-            }
-            <Grid item xs={2} md={9} />
-            {(tickets.length > 0)&&               
-             <GridLoadingButton label={'Generar Factura'} click={()=>{generar()}} loading={fdata.loading} variant={'outlined'} icon={<ReceiptOutlinedIcon />} color={'success'} fullWidth={false} size={'large'} disabled={false}      xs={10} md={3}/>
-            }
         </Grid>
     )
 }

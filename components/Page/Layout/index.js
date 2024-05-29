@@ -9,7 +9,7 @@ Toolbar, useScrollTrigger,
 Slide, CssBaseline,
 useMediaQuery}     from '@mui/material';
 import ArrowBackIosNewOutlinedIcon  from '@mui/icons-material/ArrowBackIosNewOutlined';
-import HelpIcon                     from '@mui/icons-material/Help';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
 import GridLoadingButton            from '../../../fastComponents/Girds/GridLoadingButton';
 import ReprintInvoice               from '../ReprintInvoice'
@@ -41,14 +41,12 @@ export default function Leyout({props, page, setPage}) {
     <Fragment>
       <CssBaseline />
       <HideOnScroll {...props}>
-        <AppBar style={{background : '#EBEAEA'}}>
+        <AppBar style={{background : '#FFFFFF'}} elevation={2}>
           <Toolbar>
-            <Grid container spacing={1}>
+            <Grid container  mt={1} my={1.5}>
               <Grid item xs={0} md={1} />
-              <GridLoadingButton label={<b>Inicio</b>}                             click={()=>{setPage('inicio')}} loading={(page === 'inicio')}    variant={'outlined'} icon={<ArrowBackIosNewOutlinedIcon />} color={'error'} fullWidth={true} size={(matches)?'large':'large'} xs={5} md={2}/>
-              <Grid item xs={1} md={5}/>
-              <GridLoadingButton label={(matches)?<b>Preguntas Frecuentes <HelpIcon /></b>:<HelpIcon />}  click={()=>{setPage('PF')}}     loading={(page === 'contained')} variant={'outlined'}                                        color={'error'} fullWidth={true} size={(matches)?'large':'large'} xs={5} md={3}/>
-              <Grid item xs={1} md={1}/>
+              <GridLoadingButton label={'Regresar'} click={()=>{setPage('inicio')}} loading={(page === 'inicio')} variant={'outlined'} icon={<ArrowBackIosNewOutlinedIcon sx={{color:'#ED1E24'}}/>} color={'error'} fullWidth={true}  xs={4.5} md={1.5}/>
+              <Grid item xs={7.5} md={9.5}/>
             </Grid>
           </Toolbar>
         </AppBar>

@@ -1,27 +1,18 @@
 
 import {Table, TableBody, TableCell, 
 TableContainer, TableHead, TableRow, 
-Paper,Button}                                       from '@mui/material';
-import DeleteOutlineOutlinedIcon                    from '@mui/icons-material/DeleteOutlineOutlined';
-import PictureAsPdfOutlinedIcon                     from '@mui/icons-material/PictureAsPdfOutlined';
-import ArticleOutlinedIcon                          from '@mui/icons-material/ArticleOutlined';
-import AttachEmailOutlinedIcon                      from '@mui/icons-material/AttachEmailOutlined';
-import GridLoadingButtonDow                         from '../../fastComponents/Girds/GridLoadingButton/GridLoadingButtonDow';
-import CancelIcon                                   from '@mui/icons-material/Cancel';
-
-import LoadingButton                                from '../../fastComponents/LoadingButton';
+Paper,Button, IconButton,Typography }               from '@mui/material';
 import { useFContext}                               from "../../FacUserProvider";
-
 export default function BasicTable({colums, rows, funcion}) { 
   const fdata   = useFContext();
   return (
-    <TableContainer component={Paper}>      
-      <Table sx={{ minWidth: 650 }} aria-label='simple table'>
+    <TableContainer component={Paper} >      
+      <Table sx={{ minWidth: '1138px', borderRadius: '10px', border: '1px solid var(--interface-gray-300, #E0E0E0)'}} aria-label='simple table'>
         <TableHead>
           <TableRow>
             {(colums)&&(colums.length > 0)&&
               colums.map((colum, index) => (
-                <TableCell key={'col-cell-'+index} align='center'>{colum.value}</TableCell>
+                <TableCell key={'col-cell-'+index} align='center'><b>{colum.value}</b></TableCell>
               ))
             }
           </TableRow>
@@ -29,22 +20,48 @@ export default function BasicTable({colums, rows, funcion}) {
         <TableBody>
           {(rows.length > 0)?
             rows.map((row, indexR) => (              
-              <TableRow key={'t-'+indexR} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+              <TableRow key={'t-'+indexR} sx={{ '&:last-child td, &:last-child th': { border: 0 } }} disabled={true}>
                 {Object.keys(row).map((key, index) => (
                   (index <= (colums.length-1))&&
                   <TableCell key={'tab-cell-'+index} align='center'>{
                     (row[key] === 'delete')?
-                    <Button onClick={()=>{funcion(indexR)}} variant='outlined' color={'info'}  startIcon={<DeleteOutlineOutlinedIcon />}>Quitar</Button>
+                      <Button onClick={()=>{funcion(indexR)}} fullWidth={false} variant='outlined' color={'error'} disabled={fdata.loading}
+                      sx={{borderRadius : '24px', height: '44px', padding: '12px 31px',justifyContent: 'center',alignItems: 'center',
+                        flexShrink: '0',
+                        textTransform: 'none',
+                        background: 'none',
+                        boxShadow: 'none',
+                        textTransform: 'none',
+                        borderColor: '#ED1E24',
+                        '&:hover': {
+                          backgroundColor: 'none',
+                          borderColor: 'none',
+                          boxShadow: 'none',
+                        },
+                        '&:active': {
+                          boxShadow: 'none',
+                          backgroundColor:'none',
+                          borderColor: 'none',
+                        },
+                        '&:focus': {
+                          boxShadow: '0px 4px 8px 0px rgba(0, 0, 0, 0.10)',
+                        },
+                      }}
+                      > <Typography sx={{color:'#ED1E24', fontSize: '17px'}} >Eliminar</Typography> 
+                      </Button>
                     :
                     (row[key] === 'impPDF')?
-                    <GridLoadingButtonDow label={''}  click={()=>{}} loading={false} variant={'contained'} icon={(row.pdfBase64 != null && row.pdfBase64 != '')?<PictureAsPdfOutlinedIcon/>:<CancelIcon/>}   color={(row.pdfBase64 != null && row.pdfBase64 != '')?'info':'error'} fullWidth={false} docName={row.uuid+'.pdf'} href={(row.pdfBase64 != null && row.pdfBase64 != '')?'data:image/xml;base64,'+row.pdfBase64:''} size={'medium'}  xs={12} md={2}/>
+                      <a download={row.uuid+'.pdf'} href={(row.pdfBase64 != null && row.pdfBase64 != '')?'data:image/xml;base64,'+row.pdfBase64:''}>
+                        <img id="Icon_download" src="/Icon_download.png" alt={'Icon_download'} loading='lazy'/>
+                      </a>
                     :
                     (row[key] === 'impXML')?
-                    <GridLoadingButtonDow label={''}  click={()=>{}} loading={false} variant={'contained'} icon={(row.xmlBase64 != null && row.xmlBase64 != '')?<ArticleOutlinedIcon/>:<CancelIcon/>}   color={(row.xmlBase64 != null && row.xmlBase64 != '')?'info':'error'} fullWidth={false} docName={row.uuid+'.xml'} href={'data:image/xml;base64,'+row.xmlBase64} size={'medium'} xs={12} md={2}/>
+                      <a download={row.uuid+'.xml'} href={(row.pdfBase64 != null && row.pdfBase64 != '')?'data:image/xml;base64,'+row.xmlBase64:''}>
+                        <img id="Icon_download" src="/Icon_download.png" alt={'Icon_download'} loading='lazy'/>
+                      </a>
                     :
                     (row[key] === 'mail')?
-                    <LoadingButton label={''} click={()=>{funcion(row)}} loading={fdata.loading} variant={'contained'} icon={<AttachEmailOutlinedIcon />} color={'info'} fullWidth={false} disabled={false} size={'medium'}/>
-                    // <Button onClick={()=>{funcion(row)}} variant='outlined' color={'info'}  startIcon={<AttachEmailOutlinedIcon />}></Button>
+                      <IconButton color={'error'} onClick={()=>{funcion(row)}} disabled={fdata.loading}><img id="icon_mail" src="/icon_mail.png" alt={'icon_mail'} loading='lazy'/></IconButton>
                     :
                     row[key]}
                   </TableCell>

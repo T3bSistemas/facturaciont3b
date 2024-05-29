@@ -26,7 +26,7 @@ export default function Home() {
             <meta name="robots" content="notranslate"></meta>
             <link rel="icon" href="/img/favicon.ico" sizes="any" />
           </Head> 
-          <body translate="no" class="notranslate">
+          <body translate="no" className="notranslate">
           <FacUserProvider /> 
           </body>
       </Grid>
