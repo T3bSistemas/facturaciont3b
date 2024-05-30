@@ -54,8 +54,8 @@ export default function GenerateInvoices(){
     }
 
     const sinDiacriticos = (function(){
-        let de = 'ÁÃÀÄÂÉËÈÊÍÏÌÎÓÖÒÔÚÜÙÛÑÇáãàäâéëèêíïìîóöòôúüùûñç',
-             a = 'AAAAAEEEEIIIIOOOOUUUUNCaaaaaeeeeiiiioooouuuunc',
+        let de = 'ÁÃÀÄÂÉËÈÊÍÏÌÎÓÖÒÔÚÜÙÛÇáãàäâéëèêíïìîóöòôúüùûñç',
+             a = 'AAAAAEEEEIIIIOOOOUUUUCaaaaaeeeeiiiioooouuuunc',
             re = new RegExp('['+de+']' , 'ug');    
         return texto =>
             texto.replace(
